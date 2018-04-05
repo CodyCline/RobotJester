@@ -1,0 +1,28 @@
+<div class="container">
+    <table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Items</th>
+            <th>Order Date</th>
+            <th>Approve/Deny</th>
+        </tr>
+    </thead>
+        <tbody>
+            <tr>
+                <td><a href="/Orders">CLICK CUSTOMER PROFILE</a></td>
+                <td>
+                    <!-- 
+                        foreach statement will go here to list what the customer bought
+                        the below ones are just for testing/visual
+                     -->
+                    <a href="/Orders">Shoes</a>
+                    <a href="/Orders">Candles</a>
+                </td>
+                <td>@DateTime.Now.ToString("D")</td>
+                <td><button class="btn btn-success">Approve</button><button class="btn btn-danger">Deny</button></td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>

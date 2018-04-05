@@ -1,0 +1,18 @@
+﻿@model List<Products>
+@using RobotJester.Models
+
+<div class="container">
+    <h1>CHECK OUT OUR TREASURES :D</h1>
+</div>
+
+<div class="container">
+    @foreach(var item in ViewBag.All)
+    {
+        <div class="container">
+            <h1><a href="/product/@item.product_id">@item.name</a></h1>
+            <h3>@item.instock_quantity left in stock</h3>
+            <h3>$@item.price</h3>
+        </div>
+    }
+</div>
+

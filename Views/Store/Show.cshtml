@@ -1,0 +1,21 @@
+@model Products
+@using RobotJester.Models
+
+<div class="container">
+    <h1>@Model.name</h1>
+    <img src="http://via.placeholder.com/350x150" alt="placeholder">
+    <h2>@Model.instock_quantity left in stock</h2>
+    <h2>$@Model.price</h2>
+    <p>Description: @Model.description</p>
+    <p>Add to cart!</p>
+
+    <form method="POST" asp-controller="Order" asp-action="AddToCart">
+        <input type="submit" value="Add to bag!" class="btn btn-sm btn-warning">
+        <input type="number" name="Quantity" value="1" min="1" max="50">
+        
+    </form>
+      
+    </h1>  
+    <hr>
+    <h1>Reviews by people!</h1>
+</div>

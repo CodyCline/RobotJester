@@ -23,14 +23,18 @@ namespace RobotJester.Models
       
     }
 
-    public class Customers
+    public class User
     {
+        internal int user_id;
+
         [Key]
         public long id { get; set; }
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string email { get; set; }
         public int phone { get; set; }
+
+        public string password { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
         
@@ -55,7 +59,7 @@ namespace RobotJester.Models
         
         //RELATIONSHIP(S) -- MANY TO MANY JOINING PRODUCTS AND CUSTOMERS IN TABLE "ORDERS"
         public long customer_id { get; set; }
-        public Customers customers { get; set; }
+        public User user { get; set; }
         
         public long product_id { get; set; }
         public Products products { get; set; }
@@ -102,7 +106,7 @@ namespace RobotJester.Models
 
         //RELATIONSHIP(S) -- ONE TO MANY WITH CUSTOMERS
         public long customer_id { get; set; }
-        public Customers customer { get; set; }
+        public User user { get; set; }
     }
 
     

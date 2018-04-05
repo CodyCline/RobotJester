@@ -7,7 +7,7 @@ namespace RobotJester.Models
     public class Dashboard
     {
         public List<Products> Products {get;set;}
-        public Customers Customers {get;set;}
+        public User users {get;set;}
     }
     public class ViewProduct
     {

@@ -7,7 +7,8 @@ namespace RobotJester.Models
     {
         // base() calls the parent class' constructor passing the "options" parameter along
         public StoreContext(DbContextOptions<StoreContext> options) : base(options) { }
-        public DbSet<Customers> customers { get; set; }
+        
+        public DbSet<User> users { get; set; }
         public DbSet<Products> products { get; set; }
         public DbSet<Orders> orders { get; set; }
         public DbSet<Addresses> addresses { get; set; }

@@ -13,14 +13,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RobotJester.Controllers
 {
-    public class OrderController : Controller
+    
+    public class OfficeController : Controller
     {
         private StoreContext _context;
  
-        public OrderController(StoreContext context)
+        public OfficeController(StoreContext context)
         {
             _context = context;
         }
+            
 
         
 
@@ -29,7 +31,7 @@ namespace RobotJester.Controllers
         public IActionResult Orders()
         {
             return View();
-        }
+        }   
 
         [HttpGet]
         [Route("Orders/{id}")]

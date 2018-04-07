@@ -43,10 +43,7 @@ namespace RobotJester.Controllers
         [HttpPost]
         public IActionResult AddToCart()
         {
-            Orders cart = new Orders
-            {
-            };
-            return RedirectToAction("orders/@product_id"); 
+            return null;
         }
     }
 }

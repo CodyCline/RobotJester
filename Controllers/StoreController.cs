@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using RobotJester.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using RobotJester.Utilities;
 
 namespace RobotJester.Controllers
 {
@@ -36,6 +37,8 @@ namespace RobotJester.Controllers
             return View();
         }
 
+        //MAIN PRODUCT PAGE WHERE ITEMS ARE ON DISPLAY
+
         [HttpGet]
         [Route("Products")]
         public IActionResult Products()
@@ -44,6 +47,8 @@ namespace RobotJester.Controllers
             ViewBag.All = allItems;
             return View();
         }
+        
+        //VIEW SPECIFIC ITEM AND GET DETAILS
 
         [HttpGet]
         [Route("product/{id}")]
@@ -53,37 +58,26 @@ namespace RobotJester.Controllers
             return View(show);
         }
 
-        [Authorize(Policy = "AdminPrivledges")]
-        [HttpGet]
-        [Route("Create")]
-        public IActionResult Create()
+        //ADD TO CART AND STORE THE VALUE IN A USER SPECIFIC SESSION
+        [HttpPost]
+        [Route("addtobag")]
+        public IActionResult AddToCart(int product_id, int quantity)
         {
-            return View();
+            Products prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
+            if (prod == null)
+                return RedirectToAction("Show");
+            List<Products> cart = HttpContext.Session.GetObjectFromJson<List<Products>>("cart");
+            cart.Add(prod);
+            HttpContext.Session.SetObjectAsJson("cart", cart);
+            return View("Show");
         }
 
-        
-        [HttpPost]
-        [Route("Validate")]
-        public IActionResult Validate(ViewProduct newProduct)
+        public void Checkout()
         {
-            if(ModelState.IsValid)
-            {
-                Products product = new Products
-                {
-                    name = newProduct.name,
-                    price = newProduct.price, 
-                    description = newProduct.description,
-                    instock_quantity = newProduct.instock_quantity,
-                    weight = newProduct.weight,
-                    x_dimension = newProduct.x_dimension,
-                    y_dimension = newProduct.y_dimension,
-                    z_dimension = newProduct.z_dimension
-                };
-                _context.products.Add(product);
-                _context.SaveChanges();
-                return RedirectToAction("Products");
-            }
-            return View("Create", newProduct);
+            
+            //DESERIALIZE THE OBJECTS IN SESSION AND START PENDING THEM AS AN ORDER 
+            List<Products> cart = HttpContext.Session.GetObjectFromJson<List<Products>>("cart");
         }
+
     }
 }

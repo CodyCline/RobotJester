@@ -1,0 +1,48 @@
+@model RobotJester.Models.ViewProduct
+
+<form method="post" asp-controller="Office" asp-action="Validate">
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <span asp-validation-for="name"></span>
+            <label asp-for="name">Product Name</label>
+            <input class="form-control" asp-for="name">
+        </div>
+        <div class="col-sm-6">
+            <span asp-validation-for="price"></span>
+            <label asp-for="price">Price</label>
+            <input class="form-control" asp-for="price">
+        </div>
+        <div class="col-sm-12">
+            <span asp-validation-for="description"></span>
+            <label asp-for="description">Description</label>         
+            <textarea rows="3" class="form-control" asp-for="description"></textarea>
+        </div>
+        <div class="col-sm-6">
+            <span asp-validation-for="instock_quantity"></span>
+            <label asp-for="instock_quantity">Quantity Instock</label>
+            <input class="form-control" asp-for="instock_quantity">
+        </div>
+        <div class="col-sm-6">
+            <span asp-validation-for="weight"></span>
+            <label asp-for="weight">Weight</label>
+            <input class="form-control" asp-for="weight">
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="x_dimension"></span>
+            <label asp-for="x_dimension">X-Axis-Dimension</label>
+            <input class="form-control" asp-for="x_dimension">
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="y_dimension"></span>
+            <label asp-for="y_dimension">Y-Axis-Dimension</label>
+            <input class="form-control" asp-for="y_dimension">
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="z_dimension"></span>
+            <label asp-for="z_dimension">Z-Axis-Dimension</label>
+            <input class="form-control" asp-for="z_dimension">
+        </div>
+        <img src="https://i.stack.imgur.com/mg50D.png" alt="">
+        <input type="submit" value="Create" class="btn btn-primary">
+    </div>
+</form>

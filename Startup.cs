@@ -30,7 +30,7 @@ namespace RobotJester
             services.AddMvc(options => 
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                //USE THIS LATER
+                //USE THIS LATER FOR REQUIRING HTTPS
                 // options.Filters.Add(new RequireHttpsAttribute()); 
                 
 
@@ -65,17 +65,15 @@ namespace RobotJester
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
-            
+            });           
             //NEED TO ENABLE HTTPS SSL TO USE THESE HEADERS
-            //ENFORCE HTTPS (T.O.F.U.) COMMENT OUT FOR NOW UNTIL DEPLOYMENT AND PRODUCTION READY
+            //ENFORCE HTTPS (DISABLE T.O.F.U.) COMMENT OUT FOR NOW UNTIL DEPLOYMENT AND PRODUCTION READY
+
             // app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
             
             // app.UseXXssProtection(options => options.EnabledWithBlockMode());
             // app.UseXContentTypeOptions();
-
             app.UseStaticFiles();
-
             app.UseAuthentication();
             app.UseMvc();
         }

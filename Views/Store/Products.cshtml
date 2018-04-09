@@ -8,10 +8,14 @@
 <div class="container">
     @foreach(var item in ViewBag.All)
     {
-        <div class="container">
-            <h1><a href="/product/@item.product_id">@item.name</a></h1>
-            <h3>@item.instock_quantity left in stock</h3>
-            <h3>$@item.price</h3>
+        <div class="row">
+            <div class="col-md-12 col-xs">
+                <img src="" alt="product_image.png">
+                <h1><a href="/product/@item.product_id">@item.name</a></h1>
+                <h3>@item.instock_quantity left in stock</h3>
+                <h3>$@item.price</h3>
+            </div>
+            
         </div>
     }
 </div>

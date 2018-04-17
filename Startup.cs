@@ -26,6 +26,7 @@ namespace RobotJester
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<StoreContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
             services.AddMvc(options => 
             {
@@ -35,7 +36,10 @@ namespace RobotJester
                 
 
             });
-            services.AddSession();
+            services.AddSession(options => 
+            {
+                options.Cookie.Name = ".Session.cart";
+            });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 
                 {
@@ -47,6 +51,7 @@ namespace RobotJester
             {
                 options.AddPolicy("AdminPrivledges", p => p.RequireAuthenticatedUser().RequireRole("Admin"));
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +80,9 @@ namespace RobotJester
             // app.UseXContentTypeOptions();
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseSession();
             app.UseMvc();
+            
         }
     }
 }

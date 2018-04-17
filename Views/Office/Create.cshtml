@@ -27,22 +27,27 @@
             <label asp-for="weight">Weight</label>
             <input class="form-control" asp-for="weight">
         </div>
-        <div class="col-sm-4">
-            <span asp-validation-for="x_dimension"></span>
-            <label asp-for="x_dimension">X-Axis-Dimension</label>
-            <input class="form-control" asp-for="x_dimension">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <span asp-validation-for="x_dimension"></span>
+                <label asp-for="x_dimension">X-Axis-Dimension</label>
+                <input class="form-control" asp-for="x_dimension">
+            </div>
+            <div class="form-group">
+                <span asp-validation-for="y_dimension"></span>
+                <label asp-for="y_dimension">Y-Axis-Dimension</label>
+                <input class="form-control" asp-for="y_dimension">
+            </div>
+            <div class="form-group">
+                <span asp-validation-for="z_dimension"></span>
+                <label asp-for="z_dimension">Z-Axis-Dimension</label>
+                <input class="form-control" asp-for="z_dimension">
+            </div>
         </div>
-        <div class="col-sm-4">
-            <span asp-validation-for="y_dimension"></span>
-            <label asp-for="y_dimension">Y-Axis-Dimension</label>
-            <input class="form-control" asp-for="y_dimension">
-        </div>
-        <div class="col-sm-4">
-            <span asp-validation-for="z_dimension"></span>
-            <label asp-for="z_dimension">Z-Axis-Dimension</label>
-            <input class="form-control" asp-for="z_dimension">
-        </div>
-        <img src="https://i.stack.imgur.com/mg50D.png" alt="">
-        <input type="submit" value="Create" class="btn btn-primary">
+        <div class="col-sm-6">
+            <img src="https://i.stack.imgur.com/mg50D.png"alt="">
+        </div>        
+    <div class="col-sm-12">
+        <input type="submit" value="Create" class="btn btn-success">
     </div>
 </form>

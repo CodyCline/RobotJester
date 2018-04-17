@@ -9,7 +9,7 @@
     <p>Description: @Model.description</p>
     <p>Add to cart!</p>
 
-    <form method="POST" asp-controller="Order" asp-action="AddToCart">
+    <form method="POST" asp-controller="Store" asp-action="AddToCart">
         <input type="submit" value="Add to bag!" class="btn btn-sm btn-warning">
         <input type="hidden" name="product_id" value="@Model.product_id">
         <input type="number" name="Quantity" value="1" min="1" max="50">

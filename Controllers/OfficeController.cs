@@ -58,7 +58,9 @@ namespace RobotJester.Controllers
                     weight = newProduct.weight,
                     x_dimension = newProduct.x_dimension,
                     y_dimension = newProduct.y_dimension,
-                    z_dimension = newProduct.z_dimension
+                    z_dimension = newProduct.z_dimension,
+                    created_at = DateTime.Now,
+                    updated_at = DateTime.Now,
                 };
                 _context.products.Add(product);
                 _context.SaveChanges();

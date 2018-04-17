@@ -61,15 +61,17 @@ namespace RobotJester.Controllers
         //ADD TO CART AND STORE THE VALUE IN A USER SPECIFIC SESSION
         [HttpPost]
         [Route("addtobag")]
-        public IActionResult AddToCart(int product_id, int quantity)
+        
+        public IActionResult AddToCart(int id, int quantity)
         {
-            Products prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
-            if (prod == null)
-                return RedirectToAction("Show");
-            List<Products> cart = HttpContext.Session.GetObjectFromJson<List<Products>>("cart");
-            cart.Add(prod);
-            HttpContext.Session.SetObjectAsJson("cart", cart);
-            return View("Show");
+            Products prod = _context.products.SingleOrDefault(p => p.product_id == id);
+            HttpContext.Session.SetObjectAsJson("1", prod);
+            // if (prod == null)
+                // return RedirectToAction("Products");
+            // List<Products> cart = HttpContext.Session.GetObjectFromJson<List<Products>>("cart");
+            // cart.Add(prod);
+            // HttpContext.Session.SetObjectAsJson("cart", cart);
+            return View("Index");
         }
 
         public void Checkout()

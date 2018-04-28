@@ -1,0 +1,27 @@
+<div class="row">
+    <table class="table table-hover table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th><span class="glyphicon glyphicon-wrench"></span> Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Created On</th>
+                <th>Updated On</th>
+                <th>Action(s)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in ViewBag.Products)
+            {
+            <tr>
+                <td>@item.name</td>
+                <td>@item.instock_quantity</td>
+                <td>$@item.price</td>
+                <td>@item.created_at.ToString("D")</td>
+                <td>@item.updated_at.ToString("D")</td>
+                <td><a href="/edit/@item.product_id"><span class="glyphicon glyphicon-pencil"></span> Edit</a> | <a asp-action="Delete"><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    </div>

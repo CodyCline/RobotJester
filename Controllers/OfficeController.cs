@@ -35,16 +35,17 @@ namespace RobotJester.Controllers
         //C.R.U.D FOR INVENTORY MANAGEMENT
         // [Authorize(Policy = "AdminPrivledges")]
         [HttpGet]
-        [Route("Create")]
-        public IActionResult Create()
-        {   
+        [Route("Inventory")]
+        public IActionResult Inventory()
+        {
+            
             
             return View();
         }
         
         // VALIDATE PRODUCT
         [HttpPost]
-        [Route("ChkItem")]
+        [Route("Inventory")]
         public IActionResult Validate(ViewProduct newProduct)
         {
             if(ModelState.IsValid)
@@ -64,10 +65,54 @@ namespace RobotJester.Controllers
                 };
                 _context.products.Add(product);
                 _context.SaveChanges();
-                return RedirectToAction("Create");
+                return RedirectToAction("Inventory");
             }
-            return View("Create", newProduct);
+            return View("Inventory", newProduct);
         }
+
+        [HttpGet]
+        [Route("Edit")]
+        public IActionResult Edit()
+        {
+            var all = _context.products.ToList();
+            ViewBag.Products = all;   
+            return View();
+        }
+
+        [HttpGet]
+        [Route("edit/{id}")]
+        public IActionResult EditItem(int id)
+        {
+            Products edit = _context.products.SingleOrDefault(item => item.product_id == id);
+            return View(edit);
+        }
+
+        [HttpPost]
+        [Route("editItem/{id}")]
+        public IActionResult ValidateEdit(int id, EditProduct edit)
+        {
+            if(ModelState.IsValid)
+            {
+                Products current_product = _context.products.SingleOrDefault(p => p.product_id==id);
+                {
+                    current_product.name = edit.name;
+                    current_product.price = edit.price; 
+                    current_product.description = edit.description;
+                    current_product.instock_quantity = edit.instock_quantity;
+                    current_product.weight = edit.weight;
+                    current_product.x_dimension = edit.x_dimension;
+                    current_product.y_dimension = edit.y_dimension;
+                    current_product.z_dimension = edit.z_dimension;
+                    current_product.updated_at = DateTime.Now;
+                    _context.SaveChanges();
+                };
+                return RedirectToAction("Inventory");
+            }
+            return View("Inventory", edit);
+        }
+
+
+
 
         // VIEW ALL ORDERS
         [HttpGet]

@@ -13,5 +13,6 @@ namespace RobotJester.Models
         public DbSet<Orders> orders { get; set; }
         public DbSet<Addresses> addresses { get; set; }
         public DbSet<Reviews> reviews { get; set; }
+        public DbSet<Cart> cart { get; set; }
     }
 }

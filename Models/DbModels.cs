@@ -25,10 +25,9 @@ namespace RobotJester.Models
 
     public class User
     {
-        internal int user_id;
 
         [Key]
-        public long id { get; set; }
+        public int id { get; set; }
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string email { get; set; }
@@ -45,6 +44,18 @@ namespace RobotJester.Models
         public List<Reviews> reviews { get; set; }
 
         
+    }
+
+    public class Cart 
+    {
+        [Key]
+        public int id { get; set; }
+        public float total { get; set; }
+        public int quantity { get; set; }
+        public int user_id { get; set; }
+        public int product_id { get; set; }
+        public List<Products> addedProduct { get; set; }
+
     }
 
     public class Orders
@@ -98,7 +109,7 @@ namespace RobotJester.Models
         [Key]
         public long review_id { get; set; }
         public string review { get; set; }
-        public int stars { get; set; }
+        public int star_rating { get; set; }
         public float price { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }

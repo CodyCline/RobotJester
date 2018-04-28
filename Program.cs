@@ -20,7 +20,8 @@ namespace RobotJester
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseKestrel(options => {
+                .UseKestrel(options => 
+                {
                     options.AddServerHeader = false;
                 })
                 .Build();

@@ -38,8 +38,6 @@ namespace RobotJester.Controllers
         [Route("Inventory")]
         public IActionResult Inventory()
         {
-            
-            
             return View();
         }
         
@@ -106,7 +104,7 @@ namespace RobotJester.Controllers
                     current_product.updated_at = DateTime.Now;
                     _context.SaveChanges();
                 };
-                return RedirectToAction("Inventory");
+                return RedirectToAction("Edit");
             }
             return View("Inventory", edit);
         }

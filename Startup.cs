@@ -43,7 +43,7 @@ namespace RobotJester
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 
                 {
-                    options.AccessDeniedPath="/LoginRegister/ErrorForbidden";
+                    options.AccessDeniedPath="/Account/ErrorForbidden";
                     options.LoginPath="/";
                 });
 

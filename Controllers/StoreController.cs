@@ -67,13 +67,13 @@ namespace RobotJester.Controllers
             
             int? session_id = HttpContext.Session.GetInt32("id");
             Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
-            User user = _context.users.SingleOrDefault(u => u.id == session_id);
-            Cart current_cart = _context.cart.SingleOrDefault(c => c.id == session_id);
+            User user = _context.users.SingleOrDefault(u => u.user_id == session_id);
+            // Cart current_cart = _context.cart.SingleOrDefault(c => c.cart_id == session_id);
             // if(product_id == null || quantity < 1)
                 // RedirectToAction("Products");
             
             // current_cart.addedProduct = ;
-            current_cart.total += quantity * price;
+            // current_cart.total += quantity * price;
             _context.SaveChanges();
             return RedirectToAction("Products");
         }

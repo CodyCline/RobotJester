@@ -4,13 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RobotJester.Models
 {
-    public class UserRole
-    {
-        public List<User> Users {get;set;}
-        public User user {get;set;}
-    }
+    
     public class NewUser
     {
+        [Display(Name="First Name")]
         [Required]
         [MinLength(2)]
         public string first_name {get;set;}
@@ -36,10 +33,10 @@ namespace RobotJester.Models
     {
         [Required]
         [DataType(DataType.EmailAddress)]
-        public string LogEmail {get;set;}
+        public string logEmail {get;set;}
         [Required]
         [DataType(DataType.Password)]
-        public string LogPassword {get;set;}
+        public string logPassword {get;set;}
     }
 
 }

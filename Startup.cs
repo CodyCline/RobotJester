@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.HttpOverrides;
 using RobotJester.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace RobotJester
 {
@@ -26,6 +27,7 @@ namespace RobotJester
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
             services.AddDbContext<StoreContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
             services.AddMvc(options => 
@@ -38,7 +40,7 @@ namespace RobotJester
             });
             services.AddSession(options => 
             {
-                options.Cookie.Name = ".Session.cart";
+                options.Cookie.Name = "LoginCookie";
             });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 

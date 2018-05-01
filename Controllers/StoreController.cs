@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using RobotJester.Utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace RobotJester.Controllers
 {
@@ -62,25 +63,37 @@ namespace RobotJester.Controllers
         //ADD TO CART AND STORE THE VALUE IN A USER SPECIFIC SESSION
         [HttpPost]
         [Route("AddToBag/{id}")]
-        public IActionResult AddToCart(int product_id, int quantity, float price)
+        public IActionResult AddToCart(int product_id, int quantity)
         {
             
             int? session_id = HttpContext.Session.GetInt32("id");
             Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
-            User user = _context.users.SingleOrDefault(u => u.user_id == session_id);
-            // Cart current_cart = _context.cart.SingleOrDefault(c => c.cart_id == session_id);
-            // if(product_id == null || quantity < 1)
-                // RedirectToAction("Products");
+            Cart current_cart = _context.carts.SingleOrDefault(c => c.cart_id == session_id);
+            if(added_prod == null || quantity < 1)
+            {
+                RedirectToAction("Products");
+            }
+            else
+            {
+                Cart_Items new_item = new Cart_Items
+                {
+                    product_id = added_prod.product_id,
+                    cart_id = (int)session_id,
+                    quantity = quantity
+
+                };
+                _context.Add(new_item);
+                _context.SaveChanges();
+                return RedirectToAction("Products");
+            }
+            return View(product_id);   
             
-            // current_cart.addedProduct = ;
-            // current_cart.total += quantity * price;
-            _context.SaveChanges();
-            return RedirectToAction("Products");
+            
         }
 
         [HttpGet]
         [Route("Remove/{id}")]
-        public IActionResult RemoveFromCart(int id, int quantity, float price)
+        public IActionResult RemoveFromCart(int id)
         {
             return null;
         }

@@ -2,22 +2,66 @@
 @using RobotJester.Models
 
 <div class="container">
-    <h1>@Model.name</h1>
-    <img src="http://via.placeholder.com/350x150" alt="placeholder">
-    <h2>@Model.instock_quantity left in stock</h2>
-    <h2>$@Model.price</h2>
-    <p>Description: @Model.description</p>
-    <p>Add to cart!</p>
-
-    <form method="POST" asp-controller="Store" asp-action="AddToCart">
-        <input type="submit" value="Add to bag!" class="btn btn-sm btn-warning">
-        <input type="hidden" name="product_id" value="@Model.product_id">
-        <input type="hidden" name="price" value="@Model.price">
-        <input type="number" name="quantity" value="1" min="1" max="50">
+         
+    <div class="row">
+        <h1 class="text-center">@Model.name</h1>
+        <div class="col-md-8 col-sm-8 mr-top-50">
+            
+            <img  src="http://via.placeholder.com/350x150" class="img-responsive mr-botm">
+            
+            <h3>QUICK OVERVIEW OF ITEM</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <hr>
+            <h3>Reviews by people!</h3>
+            <!-- PARTIAL RENDERED HERE! -->
+        </div>
+        <div class="col-md-4 col-sm-4 mr-top-50">
+            <h3>Details</h3>
+            <p>
+                @Model.description
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <h3>Links Below</h3>
+            <ul>
+                <li>There are @Model.instock_quantity of this item left in stock </li>
+                <li>$@Model.price per unit</li>
+                <li>Lorem Ipsum</li>
+                <li>Lorem Ipsum</li>
+            </ul>
+            <p>
+                <form method="POST" asp-controller="Store" asp-action="AddToCart">
+                    <input type="submit" value="Add to bag!" class="btn btn-sm btn-warning">
+                    <input type="hidden" name="product_id" value="@Model.product_id">
+                    <input type="number" name="quantity" value="1" min="1" max="50">
+                </form> 
+            </p>
+            
+        </div>
         
-    </form>
-      
-    </h1>  
-    <hr>
-    <h1>Reviews by people!</h1>
+    </div>
 </div>

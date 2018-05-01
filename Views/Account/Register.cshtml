@@ -2,4 +2,33 @@
 
 <div class="container">
     <h1>Register Below -- its free!</h1>
+    <form method="POST" asp-controller="Account" asp-action="Register">
+        <div class="form-group">
+            <span asp-validation-for="first_name"></span>
+            <label asp-for="first_name">First Name</label>
+            <input class="form-control" asp-for="first_name">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="last_name"></span>
+            <label asp-for="last_name">Last Name</label>
+            <input class="form-control" asp-for="last_name">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="email"></span>
+            <label asp-for="email"></label>
+            <input class="form-control" asp-for="email">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="password"></span>
+            <label asp-for="password" asp-for="password">Password</label>
+            <input class="form-control" asp-for="password">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="pw_confirm"></span>
+            <label for="pw_confirm" asp-for="pw_confirm"></label>
+            <input class="form-control" asp-for="pw_confirm">
+        </div>
+        <input class="btn-btn-success" type="submit" value="Register!">
+    </form>
 </div>
+

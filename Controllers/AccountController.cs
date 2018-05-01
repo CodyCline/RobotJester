@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using RobotJester.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RobotJester.Controllers
 {
@@ -18,11 +19,7 @@ namespace RobotJester.Controllers
         public AccountController(StoreContext context)
         {
             _context = context;
-        }
-
-        
-
-
+        }    
 
 
         //LOGIN USERS CHANGE TO ASYNC METHOD LATER WITH POSTGRES + IDENTITY CLAIMS
@@ -31,18 +28,22 @@ namespace RobotJester.Controllers
         public IActionResult Login(LogUser user)
         {
             PasswordHasher<LogUser> hasher = new PasswordHasher<LogUser>();
-            User user_logging_in = _context.users.Where(u => u.email == user.logEmail).SingleOrDefault();
+            User user_logging_in = _context.users.Where(u => u.email == user.Email).SingleOrDefault();
             if(user_logging_in == null)
+            {
                 ModelState.AddModelError("Email", "Invalid Email/Password");
-                
-            else if(hasher.VerifyHashedPassword(user, user_logging_in.password, user.logPassword) == 0)
+            }                 
+            else if(hasher.VerifyHashedPassword(user, user_logging_in.password, user.Password) == 0)
             {
                 ModelState.AddModelError("Password", "Invalid Email/Password");
-                return View("Index", "Store");
+                return View("Login", "Account");
             }
             if(!ModelState.IsValid)
-                return View("Index", user_logging_in);
+            {
+                return View("Login", user_logging_in);
+            }                
             HttpContext.Session.SetInt32("id", user_logging_in.user_id);
+            HttpContext.Session.SetString("active_user", user_logging_in.first_name);
             return RedirectToAction("Dashboard");
         }
 
@@ -53,7 +54,9 @@ namespace RobotJester.Controllers
         {
             PasswordHasher<NewUser> hasher = new PasswordHasher<NewUser>();
             if(_context.users.Where(u => u.email == newUser.email).SingleOrDefault() != null)
+            {
                 ModelState.AddModelError("Email", "Email in use");
+            }    
             if(ModelState.IsValid)
             {
                 User User = new User
@@ -67,15 +70,35 @@ namespace RobotJester.Controllers
 
 
                 };
-
-                //ADD NEW CART 
-                User theUser = _context.Add(User).Entity;
+                User new_user = _context.Add(User).Entity;
                 _context.SaveChanges();
+                HttpContext.Session.SetInt32("id", new_user.user_id);
+                HttpContext.Session.SetString("active_user",new_user.first_name);
+                /* 
+                IN ORDER TO CREATE A USER CART WITH MATCHING ID'S IT 
+                FIRST NEEDS TO BE FILED INTO THE DATABASE THEN WE QUERY 
+                THE USER ID AND THEN CREATE THE CART
+                */
 
-                HttpContext.Session.SetInt32("id", theUser.user_id);
+                int? session_id = HttpContext.Session.GetInt32("id");
+                Cart user_cart = new Cart
+                {
+                    user_id = (int)session_id,
+                    created_at = DateTime.Today,
+                    updated_at = DateTime.Today,
+                };
+                _context.Add(user_cart);
+                _context.SaveChanges();                
                 return RedirectToAction("Dashboard");
             }
-            return View("Index");
+            return View("Register", newUser);
+        }
+
+        [HttpGet]
+        [Route("Login")]
+        public IActionResult Login()
+        {
+            return View();
         }
         
 
@@ -83,9 +106,13 @@ namespace RobotJester.Controllers
         [Route("Logout")]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
-            HttpContext.Session.Remove("id");
-            return RedirectToAction("Index");
+
+            foreach (var cookie in Request.Cookies.Keys) //REMOVES ALL COOKIES
+            {
+                Response.Cookies.Delete(cookie);
+            }
+            
+            return RedirectToAction("Index", "Store");
         }
 
         [HttpGet]
@@ -95,13 +122,32 @@ namespace RobotJester.Controllers
             return View();
         }
 
+       
+        [HttpGet]
+        [Route("Account")]
+        public IActionResult Dashboard()
+        {
+            //WILL CHANGE THIS TO AUTHORIZE LATER!
+            if(HttpContext.Session.GetInt32("id")==null) 
+            {
+                return RedirectToAction("Index", "Store");
+            }
+            User active_user = _context.users.SingleOrDefault(u => u.user_id==(int)HttpContext.Session.GetInt32("id"));
+            ViewBag.active_user = active_user;
+            return View();
+        }
 
         [HttpGet]
-        [Route("Dashboard")]
-        public IActionResult Dashboard()
+        [Route("Account/Manage")]
+        public IActionResult Manage()
         {
             return View();
         }
+
+        
+
+        
+
 
         
     }

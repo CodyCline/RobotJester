@@ -73,6 +73,11 @@ namespace RobotJester.Controllers
             {
                 RedirectToAction("Products");
             }
+            else if(session_id == null)
+            {
+                TempData["Error"] = "You must register or log in in to purchase our treasures!";
+                return RedirectToAction("Show");
+            }
             else
             {
                 Cart_Items new_item = new Cart_Items
@@ -84,7 +89,8 @@ namespace RobotJester.Controllers
                 };
                 _context.Add(new_item);
                 _context.SaveChanges();
-                return RedirectToAction("Products");
+                TempData["Success"] = "Product added to your cart successfully!";
+                return RedirectToAction("Show");
             }
             return View(product_id);   
             

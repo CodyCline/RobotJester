@@ -4,6 +4,10 @@
 <div class="container">
          
     <div class="row">
+        <div class="text center">
+            <p class="text-center">@TempData["Error"] </p>
+            <p class="text-center">@TempData["Success"]</p>
+        </div>
         <h1 class="text-center">@Model.name</h1>
         <div class="col-md-8 col-sm-8 mr-top-50">
             
@@ -50,8 +54,6 @@
             <ul>
                 <li>There are @Model.instock_quantity of this item left in stock </li>
                 <li>$@Model.price per unit</li>
-                <li>Lorem Ipsum</li>
-                <li>Lorem Ipsum</li>
             </ul>
             <p>
                 <form method="POST" asp-controller="Store" asp-action="AddToCart">

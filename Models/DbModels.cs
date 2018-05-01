@@ -19,7 +19,7 @@ namespace RobotJester.Models
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
         public string image_url { get; set;}
-        //RELATIONSHIP(S) -- MANY TO MANY WITH CUSTOMERS AND ORDERS
+        
     }
 
     public class User
@@ -66,6 +66,7 @@ namespace RobotJester.Models
         public int product_id { get; set; } //FOREIGN KEY
         public int cart_id { get; set; } //FOREIGN KEY
         public int quantity { get; set; }
+        public Cart user_cart { get; set; }
 
     }
 

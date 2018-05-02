@@ -2,35 +2,29 @@
     padding-bottom: 20px;
 }
 
-/* SNIPPETT CSS */
+
 #main-nav {
-    padding: 0px;
+    padding: 12px;
     /* OVERRIDES THE DEFAULT NAVBAR STYLE */
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
 }
 
 #login-dp{
     min-width: 250px;
     padding: 14px;
     overflow:hidden;
-    background-color: rgba(255,255,255,.8);
+    background-color: rgba(255,255,255,.2);
 }
 #login-dp .help-block{
     font-size:12px    
 }
 #login-dp .bottom{
-    background-color:rgba(255,255,255,.8);
+    background-color:rgba(255,255,255,.2);
     border-top:1px solid #ddd;
     clear:both;
     padding:14px;
 }
-#login-dp .social-buttons a{
-    width: 49%;
-}
-#login-dp .form-group {
-    margin-bottom: 10px;
-}
+
+
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

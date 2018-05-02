@@ -104,9 +104,13 @@ namespace RobotJester.Controllers
             return null;
         }
 
-        public void Checkout()
+        public IActionResult Checkout()
         {
+            return null;
         }
 
+
     }
+    
+    
 }

@@ -31,6 +31,7 @@ namespace RobotJester.Controllers
             User user_logging_in = _context.users.Where(u => u.email == user.Email).SingleOrDefault();
             if(user_logging_in == null)
             {
+                //Check if email exists
                 ModelState.AddModelError("Email", "Invalid Email/Password");
             }                 
             else if(hasher.VerifyHashedPassword(user, user_logging_in.password, user.Password) == 0)
@@ -128,11 +129,12 @@ namespace RobotJester.Controllers
         public IActionResult Dashboard()
         {
             //WILL CHANGE THIS TO AUTHORIZE LATER!
-            if(HttpContext.Session.GetInt32("id")==null) 
+            int? session_id = HttpContext.Session.GetInt32("id");
+            if(session_id==null) 
             {
                 return RedirectToAction("Index", "Store");
             }
-            User active_user = _context.users.SingleOrDefault(u => u.user_id==(int)HttpContext.Session.GetInt32("id"));
+            User active_user = _context.users.SingleOrDefault(u => u.user_id==(int)session_id);
             ViewBag.active_user = active_user;
             return View();
         }

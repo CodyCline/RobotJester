@@ -10,8 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.HttpOverrides;
-using RobotJester.Models;
 using Microsoft.AspNetCore.Http;
+using RobotJester.Models;
+using RobotJester.Utilities;
 
 namespace RobotJester
 {
@@ -28,6 +29,7 @@ namespace RobotJester
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<List<Cart>>();
             
             services.AddDbContext<StoreContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
             services.AddMvc(options => 
@@ -67,6 +69,8 @@ namespace RobotJester
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
 
             //SECURITY HEADERS
             app.UseForwardedHeaders(new ForwardedHeadersOptions

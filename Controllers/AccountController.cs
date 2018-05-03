@@ -8,6 +8,7 @@ using RobotJester.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace RobotJester.Controllers
 {
@@ -19,8 +20,14 @@ namespace RobotJester.Controllers
         public AccountController(StoreContext context)
         {
             _context = context;
-        }    
+        }
 
+        [HttpGet]
+        [Route("Login")]
+        public IActionResult Login()
+        {
+            return View();
+        }  
 
         //LOGIN USERS CHANGE TO ASYNC METHOD LATER WITH POSTGRES + IDENTITY CLAIMS
         [HttpPost]
@@ -37,7 +44,7 @@ namespace RobotJester.Controllers
             else if(hasher.VerifyHashedPassword(user, user_logging_in.password, user.Password) == 0)
             {
                 ModelState.AddModelError("Password", "Invalid Email/Password");
-                return View("Login", "Account");
+                return View("Login", user);
             }
             if(!ModelState.IsValid)
             {
@@ -45,10 +52,18 @@ namespace RobotJester.Controllers
             }                
             HttpContext.Session.SetInt32("id", user_logging_in.user_id);
             HttpContext.Session.SetString("active_user", user_logging_in.first_name);
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("Manage");
         }
 
-        //REGISTER USERS
+        
+        [HttpGet]
+        [Route("Register")]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        //Register users
         [HttpPost]
         [Route("Register")]
         public IActionResult Register(NewUser newUser)
@@ -75,10 +90,9 @@ namespace RobotJester.Controllers
                 _context.SaveChanges();
                 HttpContext.Session.SetInt32("id", new_user.user_id);
                 HttpContext.Session.SetString("active_user",new_user.first_name);
-                /* 
-                IN ORDER TO CREATE A USER CART WITH MATCHING ID'S IT 
-                FIRST NEEDS TO BE FILED INTO THE DATABASE THEN WE QUERY 
-                THE USER ID AND THEN CREATE THE CART
+                /*
+                In order to create a user cart with matching id's it first
+                must be filed into the database and saved. Then the cart object is created.
                 */
 
                 int? session_id = HttpContext.Session.GetInt32("id");
@@ -90,16 +104,9 @@ namespace RobotJester.Controllers
                 };
                 _context.Add(user_cart);
                 _context.SaveChanges();                
-                return RedirectToAction("Dashboard");
+                return RedirectToAction("Manage");
             }
             return View("Register", newUser);
-        }
-
-        [HttpGet]
-        [Route("Login")]
-        public IActionResult Login()
-        {
-            return View();
         }
         
 
@@ -108,43 +115,26 @@ namespace RobotJester.Controllers
         public IActionResult Logout()
         {
 
-            foreach (var cookie in Request.Cookies.Keys) //REMOVES ALL COOKIES
+            foreach (var cookie in Request.Cookies.Keys) //Removes all cookies
             {
                 Response.Cookies.Delete(cookie);
             }
             
             return RedirectToAction("Index", "Store");
         }
-
-        [HttpGet]
-        [Route("Register")]
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-       
+              
         [HttpGet]
         [Route("Account")]
-        public IActionResult Dashboard()
-        {
-            //WILL CHANGE THIS TO AUTHORIZE LATER!
-            int? session_id = HttpContext.Session.GetInt32("id");
-            if(session_id==null) 
-            {
-                return RedirectToAction("Index", "Store");
-            }
-            User active_user = _context.users.SingleOrDefault(u => u.user_id==(int)session_id);
-            ViewBag.active_user = active_user;
-            return View();
-        }
-
-        [HttpGet]
-        [Route("Account/Manage")]
         public IActionResult Manage()
         {
-            return View();
+            int? session_id = HttpContext.Session.GetInt32("id");
+            List<Cart_Items> all_items = _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == (int)session_id).ToList();
+            User active_user = _context.users.SingleOrDefault(u => u.user_id==(int)session_id);
+            ViewBag.active_user = active_user;
+            return View(all_items);
         }
+
+        
 
         
 

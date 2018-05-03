@@ -62,10 +62,11 @@ namespace RobotJester.Models
     public class Cart_Items 
     {
         [Key]
-        public int item_id { get; set; } //PRIMARY KEY
-        public int product_id { get; set; } //FOREIGN KEY
-        public int cart_id { get; set; } //FOREIGN KEY
+        public int item_id { get; set; } //Primary key
+        public int product_id { get; set; } //Foreign key
+        public int cart_id { get; set; } //Foreign key
         public int quantity { get; set; }
+        public Products all_items { get; set; }
         public Cart user_cart { get; set; }
 
     }

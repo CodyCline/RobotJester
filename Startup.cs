@@ -32,6 +32,7 @@ namespace RobotJester
             services.AddSingleton<List<Cart>>();
             
             services.AddDbContext<StoreContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
+            services.AddScoped<LoggedInUserService>();
             services.AddMvc(options => 
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());

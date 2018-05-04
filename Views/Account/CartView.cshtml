@@ -1,0 +1,58 @@
+@using RobotJester.Models
+@model List<RobotJester.Models.Cart_Items>
+<h3 class="text-center">Your cart</h3>
+<table class="table table-hover table-striped table-responsive">
+    <thead>
+        <tr>
+            <th><span class="glyphicon glyphicon-barcode"></span> Item</th>
+            <th><span class="glyphicon glyphicon-list-alt"></span> Quantity</th>
+            <th><span class="glyphicon glyphicon-usd"></span> Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var i in @Model)
+        {
+            <tr>
+                <td><a href="/Product/@i.all_items.product_id">@i.all_items.name</a></td>
+                <td>
+                    <form method="POST" asp-controller="Store" asp-action="UpdateCart">
+                        <input type="hidden" name="product_id" value="i.all_items.product_id">
+                        <input type="number" name="quantity" value="@i.quantity" min="1" max="50">
+                        <input type="submit" value="Update" class="btn btn-sm btn-primary">
+                    </form>                        
+                </td>
+                <td>$@i.all_items.price</td>
+                <td>
+                    <a href="/Remove/@i.item_id">
+                        <button class="btn btn-sm btn-danger">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </a>
+                </td>                                                            
+            </tr>                
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td><strong>Total: </strong></td>
+            <td>
+                <strong>$TBD</strong>
+            </td>
+        </tr>                         
+                                    
+    </tbody>
+</table>
+<div class="col mb-2">
+    <div class="row">
+        <div class="col-sm-12  col-md-6">
+            <a asp-controller="Store" asp-action="Products">
+                <button class="btn btn-lg btn-block btn-primary">Continue Shopping</button>
+            </a>
+        </div>
+        <div class="col-sm-12 col-md-6 text-right">
+            <a asp-controller="Store" asp-action="Checkout">
+                <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
+            </a>
+        </div>
+    </div>
+</div>

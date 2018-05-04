@@ -116,21 +116,18 @@ namespace RobotJester.Controllers
             
         }
 
-        //Update quantity from manage cart section
+        //Update quantity from manage cart section need overhaul    
         [HttpPost]
-        [Route("Update/{id}")]
-        public IActionResult UpdateCart(int product_id, int quantity)
+        [Route("Update")] ///{id}
+        public IActionResult UpdateCart(int product_id, int quantity) 
         {
             //Check if the user isn't updating the quantity to 0 or manipulating the HTML form
             int? session_id = HttpContext.Session.GetInt32("id");
-            if(session_id == null || quantity < 1)
-            {
-                TempData["UpdateFailed"] = "Enter an appropriate response";
-                return RedirectToAction("Index", "Store");
-            }
-            Cart_Items updated_item = _context.cart_items.SingleOrDefault(c => c.product_id == product_id);
-            updated_item.quantity = quantity;
-            _context.SaveChanges();
+            // Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
+            // Cart_Items updated_item = _context.cart_items.SingleOrDefault(c => c.product_id == product_id);
+            // updated_item.product_id = added_prod.product_id;
+            // updated_item.quantity = quantity;
+            // _context.SaveChanges();
             return RedirectToAction("Manage", "Account");
         }
 
@@ -150,7 +147,7 @@ namespace RobotJester.Controllers
             }
             _context.Remove(item_to_be_removed);
             _context.SaveChanges();
-            return RedirectToAction("Manage", "Account");
+            return RedirectToAction("CartView", "Account");
         }
 
         [HttpGet]

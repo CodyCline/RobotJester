@@ -61,13 +61,13 @@
                 </form>
                 @if (httpContextaccessor.HttpContext.Request.Cookies["LoginCookie"] != null)
                 {
-                    @Html.Partial("Partials/ui-cookie")
-                    @Html.Partial("Partials/ui-cart")
+                    @Html.Partial("Partials/dd-user")
+                    @Html.Partial("Partials/dd-cart")
                     
                 }
                 else
                 {
-                    @Html.Partial("Partials/ui-null")              
+                    @Html.Partial("Partials/dd-null")              
                 }
             </div>
         </div>

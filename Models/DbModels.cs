@@ -26,7 +26,7 @@ namespace RobotJester.Models
     {
 
         [Key]
-        public int user_id { get; set; } //PRIMARY KEY
+        public int user_id { get; set; } //Primary key
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string email { get; set; }
@@ -37,7 +37,7 @@ namespace RobotJester.Models
         public DateTime updated_at { get; set; }
         public int privledge_level { get; set; }
         
-        //FOR DASHBOARD DISPLAY
+        //For dashboard display (may deprecate later)
         public List<Orders> all_orders { get; set; }
         
         public List<Addresses> address_list { get;set;}
@@ -82,9 +82,10 @@ namespace RobotJester.Models
         public float tax { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
-
-        // public List<Products> products_ordered { get; set; }
         public Addresses order_address { get; set; }
+
+        //Seriously bugged
+        // public List<Cart_Items> product_ordered { get; set; }
         public User user_who_ordered { get; set; }
     }
 
@@ -102,10 +103,10 @@ namespace RobotJester.Models
         public string state_or_province { get; set; }
         public int zip_or_postal { get; set; }
         public string country { get; set; }
-        public DateTime created_at {get;set;}
-        public DateTime updated_at {get;set;}
+        public DateTime created_at { get; set; }
+        public DateTime updated_at { get; set; }
 
-        //RELATIONSHIP(S) ONE TO MANY WITH CUSTOMERS
+        public User corresponding_user { get; set; }
 
     }
 

@@ -13,9 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace RobotJester.Controllers
 {
     public class AccountController : Controller
-    {
-        
-
+    {     
         private StoreContext _context;
         public AccountController(StoreContext context)
         {
@@ -128,11 +126,39 @@ namespace RobotJester.Controllers
         public IActionResult Manage()
         {
             int? session_id = HttpContext.Session.GetInt32("id");
-            List<Cart_Items> all_items = _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == (int)session_id).ToList();
             User active_user = _context.users.SingleOrDefault(u => u.user_id==(int)session_id);
             ViewBag.active_user = active_user;
+            return View();
+        }
+
+        [HttpGet]
+        [Route("Account/Cart")]
+        public IActionResult CartView()
+        {
+            int? session_id = HttpContext.Session.GetInt32("id");
+            List<Cart_Items> all_items = _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == (int)session_id).ToList();
             return View(all_items);
         }
+
+        [HttpGet]
+        [Route("Account/Addresses")]
+        public IActionResult Addresses()
+        {
+            int? session_id = HttpContext.Session.GetInt32("id");
+            List<Addresses> all_addresses = _context.addresses.Include(u => u.corresponding_user).Where(a => a.user_id == (int)session_id).ToList();
+            return View(all_addresses);
+            
+
+        }
+
+        // [HttpGet]
+        // [Route("Account/Orders")]
+        // public IActionResult Orders()
+        // {
+        //     int? session_id = HttpContext.Session.GetInt32("id");
+        //     List<Orders> all_orders = _context.orders.Include(p => p.product_ordered).ToList();
+        //     return View(all_orders);
+        // }
 
         
 

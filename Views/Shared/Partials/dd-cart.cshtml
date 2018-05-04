@@ -5,14 +5,13 @@
         <ul id="login-dp" class="dropdown-menu">
             <li>
                 <div class="row">
-                    <p class="text-center">Items in your cart</p>
+                    <p class="text-center"><strong>Items in your cart</p></strong>
                     <table class="table table-hover table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th><span class="glyphicon glyphicon-barcode"></span> Item</th>
                                 <th><span class="glyphicon glyphicon-list-alt"></span> Quantity</th>
                                 <th><span class="glyphicon glyphicon-usd"></span> Price</th>
-                                <th><span class="glyphicon glyphicon-menu-down"></span> Action</th>
                             </tr>
                         </thead>
                         <tbody>                          
@@ -26,7 +25,7 @@
                     </table>
                     <li class="divider"></li>
                     <div class="text-center">
-                        <span class="glyphicon glyphicon-send"></span> <a asp-controller="Store" asp-action="Checkout">Continue to checkout.</a>  
+                        <span class="glyphicon glyphicon-send"></span> <a asp-controller="Account" asp-action="CartView">View your cart.</a>  
                     </div>
                 </div>
             </li>

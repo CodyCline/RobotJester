@@ -1,7 +1,3 @@
-/*TODO: RENAME TO OFFICE CONTROLLER THIS IS WHERE
-ONLY ADMINS AND MANAGERS CAN VIEW ORDERS AND OTHER
-SENSITIVE DATA */
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -78,7 +74,7 @@ namespace RobotJester.Controllers
         }
 
         [HttpGet]
-        [Route("edit/{id}")]
+        [Route("Edit/{id}")]
         public IActionResult EditItem(int id)
         {
             Products edit = _context.products.SingleOrDefault(item => item.product_id == id);
@@ -86,7 +82,7 @@ namespace RobotJester.Controllers
         }
 
         [HttpPost]
-        [Route("editItem/{id}")]
+        [Route("Edit/{id}")]
         public IActionResult ValidateEdit(int id, EditProduct edit)
         {
             if(ModelState.IsValid)
@@ -123,7 +119,7 @@ namespace RobotJester.Controllers
         // VIEW SPECIFIC ORDER WITH CUSTOMER INFO ATTACHED
         [HttpGet]
         [Route("Orders/{id}")]
-        public IActionResult Show()
+        public IActionResult Orderlist()
         {
             return View();
         }

@@ -78,7 +78,7 @@ namespace RobotJester.Controllers
         {
             
             int? session_id = HttpContext.Session.GetInt32("id");
-            // Cart_Items user_has_product = _context.cart_items.SingleOrDefault();
+            // Cart user_has_product = _context.carts.SingleOrDefault();
 
 
             Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
@@ -118,21 +118,45 @@ namespace RobotJester.Controllers
 
         //Update quantity from manage cart section need overhaul    
         [HttpPost]
-        [Route("Update")] ///{id}
-        public IActionResult UpdateCart(int product_id, int quantity) 
+        [Route("Update/Cart")]
+        public IActionResult UpdateCart(int quantity) 
         {
-            //Check if the user isn't updating the quantity to 0 or manipulating the HTML form
             int? session_id = HttpContext.Session.GetInt32("id");
-            // Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
-            // Cart_Items updated_item = _context.cart_items.SingleOrDefault(c => c.product_id == product_id);
-            // updated_item.product_id = added_prod.product_id;
-            // updated_item.quantity = quantity;
-            // _context.SaveChanges();
-            return RedirectToAction("Manage", "Account");
+            Cart_Items updated_item = _context.cart_items.Include(p => p.all_items).SingleOrDefault(c => c.cart_id == session_id);
+            
+
+            if(session_id == null)
+            {
+                return RedirectToAction("Index", "Store");
+            }
+
+            //Query the item that needs to be updated
+            
+            /* 
+            Will also need to query the cart to update their total as well
+            reduce or increase their total with if statement
+
+            if(updated_item.quantity > quantity)
+            {
+                cart_query.total -= updated_item.quantity * updated_item.all_items.price;
+            }
+            else if(updated_item.quantity < quantity)
+            {
+                cart_query.total += updated_item.quantity * updated_item.all_items.price;
+            }
+            */
+            else
+            {
+                updated_item.quantity = quantity;
+                _context.SaveChanges();
+                TempData["Update"] = "Item updated successfully";
+                return RedirectToAction("CartView", "Account");
+            }
+            
         }
 
         [HttpGet]
-        [Route("Remove/{id}")]
+        [Route("Remove/Item/{id}")]
         public IActionResult RemoveFromCart(int id)
         {
             int? session_id = HttpContext.Session.GetInt32("id");

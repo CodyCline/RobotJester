@@ -1,6 +1,7 @@
 @using RobotJester.Models
 @model List<RobotJester.Models.Cart_Items>
 <h3 class="text-center">Your cart</h3>
+<p class="text-center">@TempData["Update"]</p>
 <table class="table table-hover table-striped table-responsive">
     <thead>
         <tr>
@@ -16,14 +17,13 @@
                 <td><a href="/Product/@i.all_items.product_id">@i.all_items.name</a></td>
                 <td>
                     <form method="POST" asp-controller="Store" asp-action="UpdateCart">
-                        <input type="hidden" name="product_id" value="i.all_items.product_id">
                         <input type="number" name="quantity" value="@i.quantity" min="1" max="50">
                         <input type="submit" value="Update" class="btn btn-sm btn-primary">
                     </form>                        
                 </td>
                 <td>$@i.all_items.price</td>
                 <td>
-                    <a href="/Remove/@i.item_id">
+                    <a href="/Remove/Item/@i.item_id">
                         <button class="btn btn-sm btn-danger">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>

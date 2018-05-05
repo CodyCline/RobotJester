@@ -9,6 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RobotJester.Controllers
 {
+    /*
+    This is the OfficeController, here is where someone with admin privledges will be 
+    redirected upon login. This is where you can manage the store settings like adding 
+    more items looking at orders and so on.
+     */
     
     public class OfficeController : Controller
     {
@@ -23,12 +28,10 @@ namespace RobotJester.Controllers
         [Route("Table")]
         public IActionResult ToolTable()
         {
-            List<Products> allItems =_context.products.ToList();
-            ViewBag.ProductTable = allItems;
             return View();        
         }
 
-        //C.R.U.D FOR INVENTORY MANAGEMENT
+        //C.R.U.D For inventory management
         // [Authorize(Policy = "AdminPrivledges")]
         [HttpGet]
         [Route("Inventory")]
@@ -37,7 +40,7 @@ namespace RobotJester.Controllers
             return View();
         }
         
-        // VALIDATE PRODUCT
+        // Validate product
         [HttpPost]
         [Route("Inventory")]
         public IActionResult Validate(ViewProduct newProduct)
@@ -105,24 +108,59 @@ namespace RobotJester.Controllers
             return View("Inventory", edit);
         }
 
-
-
-
-        // VIEW ALL ORDERS
+        //Delete a specific item
         [HttpGet]
-        [Route("Orders")]
+        [Route("Delete/Product/{id}")]
+        public IActionResult DeleteItem()
+        {
+            /*
+            TODO: This method will delete a specific product. Simple enough, 
+            however, there needs to be a foreach loop which removes all "cart_item"
+            records that have matching product id's so that a user cannot purchase an item
+            that no longer exists.
+             */
+
+
+            //This viewdata will be returned and rendered in a user's cart when they login.
+            ViewData["Removed"] = "We removed item(s) from your cart that no longer exist in our inventory";
+
+            return null;
+        }
+
+
+        //C.R.U.D For orders
+        [HttpGet]
+        [Route("Orders/OrderList")]
         public IActionResult Orders()
         {
             return View();
         }   
 
-        // VIEW SPECIFIC ORDER WITH CUSTOMER INFO ATTACHED
+        // View specific order with a customer
         [HttpGet]
-        [Route("Orders/{id}")]
-        public IActionResult Orderlist()
+        [Route("Orders/Show/{id}")]
+        public IActionResult Orderlist(int id)
         {
             return View();
         }
+
+        //C.R.U.D For user's
+        [HttpGet]
+        [Route("Users")]
+        public IActionResult Users()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("Users/Show/{id}")]
+        public IActionResult UserList(int id)
+        {
+            return null;
+        }
+
+
+
 
         
     }

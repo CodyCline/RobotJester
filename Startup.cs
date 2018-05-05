@@ -27,12 +27,10 @@ namespace RobotJester
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<List<Cart>>();
-            
+        {            
             services.AddDbContext<StoreContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
-            services.AddScoped<LoggedInUserService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();  
+            services.AddScoped<LoggedInUserService>(); //Grabs specific user data
             services.AddMvc(options => 
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -73,18 +71,16 @@ namespace RobotJester
 
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
 
-            //SECURITY HEADERS
+            //Security headers
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });           
-            //NEED TO ENABLE HTTPS SSL TO USE THESE HEADERS
-            //ENFORCE HTTPS (DISABLE T.O.F.U.) COMMENT OUT FOR NOW UNTIL DEPLOYMENT AND PRODUCTION READY
-
-            // app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
-            
+            });
+            //Enforce HTTPS, T.O.F.U, and XXss are disabled until production ready
+            // app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());            
             // app.UseXXssProtection(options => options.EnabledWithBlockMode());
             // app.UseXContentTypeOptions();
+            
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseSession();

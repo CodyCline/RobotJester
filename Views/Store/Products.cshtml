@@ -1,8 +1,8 @@
 ﻿@model List<Products>
 @using RobotJester.Models
 
-<div class="container">
-    <h1>CHECK OUT OUR ITEMS</h1>
+<div class="container text-center">
+    <h1>OUR INVENTORY</h1>
 </div>
 
 <div class="container">
@@ -20,10 +20,9 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla egestas feugiat gravida. </p>
                                 <ul>
                                     <li>@item.instock_quantity left in stock </li>
-                                    <li>$@item.price.99</li>
+                                    <li>$@item.price</li>
                                 </ul>
                                 <p class="text-center">
-                                    <a href="/Products" class="btn btn-primary" role="button">BUY NOW</a> 
                                     <a href="/product/@item.product_id" class="btn btn-success" role="button">See Details</a>
                                 </p>
                             </div>

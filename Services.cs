@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using RobotJester.Models;
 
+//These are queries registered in the Startup.cs file that can be accessed with dependency injection.
 namespace RobotJester
 {
     public class LoggedInUserService
@@ -16,8 +19,19 @@ namespace RobotJester
         public User LoggedInDood
         {
             get { 
-                int userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
-                return _dbContext.users.SingleOrDefault(u => u.user_id == userSessionId);}
+                int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
+                return _dbContext.users.SingleOrDefault(u => u.user_id == userSessionId);
+            }
+        }
+
+        public List<Cart_Items> user_cart
+        {
+            get {
+                int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
+                return _dbContext.cart_items.Include(a => a.all_items).Where(a => a.cart_id == userSessionId).ToList();
+            }
+
         }
     }
+
 }

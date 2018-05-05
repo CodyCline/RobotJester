@@ -16,14 +16,13 @@ namespace RobotJester
             _dbContext = context;
             _httpContext = httpContext;
         }
-        public User LoggedInDood
+        public User LoggedInUser
         {
             get { 
                 int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
                 return _dbContext.users.SingleOrDefault(u => u.user_id == userSessionId);
             }
         }
-
         public List<Cart_Items> user_cart
         {
             get {

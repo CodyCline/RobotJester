@@ -78,11 +78,11 @@ namespace RobotJester.Controllers
         {
             
             int? session_id = HttpContext.Session.GetInt32("id");
-            // Cart user_has_product = _context.carts.SingleOrDefault();
-
-
             Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
-            if(added_prod == null || quantity < 1) //Null check in case the user is doing something weird like adding 0 items or manipulating the HTML form
+            Cart_Items cart_check = _context.cart_items.FirstOrDefault(c => c.cart_id == (int)session_id); //Check if the item is already in cart
+            
+            //Null check in case the user is doing something weird like adding 0 items or manipulating the HTML form
+            if(added_prod == null || quantity < 1) 
             {
                 TempData["Cart"] = "Please add at least one item to the cart";
                 RedirectToAction("Show");
@@ -92,11 +92,16 @@ namespace RobotJester.Controllers
                 TempData["Error"] = "You must register or log in in to purchase our treasures!";
                 return RedirectToAction("Show");
             }
-            //Check if item is in the cart
-            // else if()
-            // {
+            //Check if item is in the cart. If true (not null) then update existing cart
+            else if(cart_check != null)
+            {
+                cart_check.quantity += quantity;
+                _context.SaveChanges();
+                TempData["Success"] = "Product added to your cart successfully!";
+                return RedirectToAction("Show");
 
-            // }
+            }
+            
             else
             {
                 Cart_Items new_item = new Cart_Items
@@ -111,7 +116,7 @@ namespace RobotJester.Controllers
                 TempData["Success"] = "Product added to your cart successfully!";
                 return RedirectToAction("Show");
             }
-            return View(product_id);   
+            return View("Show");   
             
             
         }
@@ -121,9 +126,9 @@ namespace RobotJester.Controllers
         [Route("Update/Cart")]
         public IActionResult UpdateCart(int quantity) 
         {
+            //Note: if a user has a duplicate item in their cart it will throw a serious error
             int? session_id = HttpContext.Session.GetInt32("id");
-            Cart_Items updated_item = _context.cart_items.Include(p => p.all_items).SingleOrDefault(c => c.cart_id == session_id);
-            
+            Cart_Items updated_item = _context.cart_items.Include(p => p.all_items).FirstOrDefault(c => c.cart_id == (int)session_id);
 
             if(session_id == null)
             {
@@ -146,7 +151,7 @@ namespace RobotJester.Controllers
             }
             */
             else
-            {
+            {            
                 updated_item.quantity = quantity;
                 _context.SaveChanges();
                 TempData["Update"] = "Item updated successfully";
@@ -161,11 +166,7 @@ namespace RobotJester.Controllers
         {
             int? session_id = HttpContext.Session.GetInt32("id");
             Cart_Items item_to_be_removed = _context.cart_items.SingleOrDefault(i => i.item_id == id);
-            if(item_to_be_removed == null)
-            {
-                return RedirectToAction("Index");
-            }
-            else if(item_to_be_removed.cart_id !=(int)session_id)
+            if(item_to_be_removed == null || item_to_be_removed.cart_id != (int)session_id)
             {
                 return RedirectToAction("Index");
             }

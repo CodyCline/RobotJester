@@ -39,8 +39,31 @@
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </p>
             <hr>
-            <h3>Reviews by people!</h3>
-            <!-- PARTIAL RENDERED HERE! -->
+            <!-- Partial rendered here for querying product reviews ! -->
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel with-nav-tabs panel-default">
+                        <div class="panel-heading">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab1default" data-toggle="tab">Product Details</a></li>
+                                <li><a href="#tab2default" data-toggle="tab">Reviews</a></li> 
+                                <li><a href="#tab3default" data-toggle="tab">Other</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="tab1default">Default 1</div>
+                                <div class="tab-pane fade" id="tab2default">
+                                    Partial Rendered here
+                                </div>
+                                <div class="tab-pane fade" id="tab3default">Default 3</div>
+                            </div>
+                        </div>
+	                </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-4 col-sm-4 mr-top-50">
             <h3>Details</h3>
@@ -52,7 +75,7 @@
             </p>
             <h3>Links Below</h3>
             <ul>
-                <li>There are @Model.instock_quantity of this item left in stock </li>
+                <li>@Model.instock_quantity of this item left in stock!</li>
                 <li>$@Model.price per unit</li>
             </ul>
             <p>

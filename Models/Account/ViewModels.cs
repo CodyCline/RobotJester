@@ -38,10 +38,33 @@ namespace RobotJester.Models
     {
         [Required]
         [DataType(DataType.EmailAddress)]
-        public string Email {get;set;}
+        public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
-        public string Password {get;set;}
+        public string Password { get; set; }
+    }
+
+    public class NewAddress
+    {
+        [Required]
+        [MinLength(6)]
+        public string Address_One { get; set; }
+        
+        
+        public string Address_Two { get; set; }
+
+        [Required]
+        [MinLength(2)]
+        public string City { get; set; }
+
+        
+        public string State_Province { get; set; }
+
+        [Required]
+        public int Zip_Postal { get; set; }
+
+        
+        public string Country { get; set; }
     }
 
 }

@@ -59,7 +59,7 @@
                     </div>
                     <button type="submit" class="btn btn-default"><span class="text-center glyphicon glyphicon-search"></span></button>
                 </form>
-                @if (httpContextaccessor.HttpContext.Request.Cookies["LoginCookie"] != null)
+                @if (httpContextaccessor.HttpContext.Session.GetInt32("id") != null)
                 {
                     @Html.Partial("Partials/dd-user")
                     @Html.Partial("Partials/dd-cart")

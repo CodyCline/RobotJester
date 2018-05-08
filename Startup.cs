@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Http;
 using RobotJester.Models;
-using RobotJester.Utilities;
 
 namespace RobotJester
 {

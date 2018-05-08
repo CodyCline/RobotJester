@@ -20,6 +20,8 @@ namespace RobotJester.Controllers
             _context = context;
         }
 
+        
+
         [HttpGet]
         [Route("Login")]
         public IActionResult Login()
@@ -91,8 +93,7 @@ namespace RobotJester.Controllers
                 /*
                 In order to create a user cart with matching id's it first
                 must be filed into the database and saved. Then the cart object is created.
-                */
-
+                */               
                 int? session_id = HttpContext.Session.GetInt32("id");
                 Cart user_cart = new Cart
                 {
@@ -125,6 +126,7 @@ namespace RobotJester.Controllers
         [Route("Account")]
         public IActionResult Manage()
         {
+            
             int? session_id = HttpContext.Session.GetInt32("id");
             User active_user = _context.users.SingleOrDefault(u => u.user_id==(int)session_id);
             ViewBag.active_user = active_user;
@@ -142,14 +144,51 @@ namespace RobotJester.Controllers
 
         [HttpGet]
         [Route("Account/Addresses")]
-        public IActionResult Addresses()
+        public IActionResult AddressView()
         {
             int? session_id = HttpContext.Session.GetInt32("id");
             List<Addresses> all_addresses = _context.addresses.Include(u => u.corresponding_user).Where(a => a.user_id == (int)session_id).ToList();
-            return View(all_addresses);
             
-
+            return View(all_addresses);
         }
+
+        [HttpGet]
+        [Route("Account/Addresses/New")]
+        public IActionResult NewAddress()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [Route("Account/Addresses/New")]
+        public IActionResult ValidateAddress(NewAddress newAddress)
+        {
+            int? session_id = HttpContext.Session.GetInt32("id");
+            if(ModelState.IsValid)
+            {
+                Addresses address = new Addresses
+                {
+                    address_line_one = newAddress.Address_One,
+                    address_line_two = newAddress.Address_Two,
+                    city = newAddress.City,
+                    state_or_province = newAddress.State_Province,
+                    zip_or_postal = newAddress.Zip_Postal,
+                    country = newAddress.Country,
+                    created_at = DateTime.Now,
+                    updated_at = DateTime.Now,
+                    user_id = (int)session_id,  
+                };
+
+                _context.Add(address);
+                _context.SaveChanges();
+                return RedirectToAction("AddressView");
+            }
+            return View("NewAddress", newAddress);
+        }
+
+        
+
 
         // [HttpGet]
         // [Route("Account/Orders")]

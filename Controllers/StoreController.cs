@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using RobotJester.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using RobotJester.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 

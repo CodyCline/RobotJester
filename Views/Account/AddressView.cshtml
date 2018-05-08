@@ -1,0 +1,14 @@
+@using RobotJester.Models
+@model List<Addresses>
+<h1 class="text-center">Your address list</h1>
+
+@foreach(var a in Model)
+{
+    <div class="container">
+        <p>@a.address_line_one</p>
+        <p><a href="/Addresses/Edit/@a.address_id">Make a correction</a></p>
+
+    </div>
+}
+
+<a asp-action="NewAddress" asp-controller="Account"><h3><span class="glyphicon glyphicon-plus"></span> Add a new address</h3></a>

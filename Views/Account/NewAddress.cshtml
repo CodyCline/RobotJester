@@ -1,0 +1,37 @@
+@using RobotJester.Models
+@model RobotJester.Models.NewAddress
+<div class="row">
+    <h3>Create a new address.</h3>
+    <form method="POST" asp-controller="Account" asp-action="ValidateAddress">
+        <div class="form-group">
+            <span asp-validation-for="Address_One"></span>
+            <label asp-for="Address_One">First Name</label>
+            <input class="form-control" asp-for="Address_One">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="Address_Two"></span>
+            <label asp-for="Address_Two">Last Name</label>
+            <input class="form-control" asp-for="Address_Two">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="City"></span>
+            <label asp-for="City"></label>
+            <input class="form-control" asp-for="City">
+        </div>
+        <div class="form-group">
+            <input type="text" asp-for="State_Province">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="Zip_Postal"></span>
+            <label asp-for="Zip_Postal"></label>
+            <input class="form-control" asp-for="Zip_Postal">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="Country"></span>
+            <label asp-for="Country"></label>
+            <input class="form-control" asp-for="Country">
+        </div>
+        
+        <input class="btn-btn-success" type="submit" value="Add">
+    </form>
+</div>

@@ -86,7 +86,7 @@ namespace RobotJester.Controllers
 
         [HttpPost]
         [Route("Edit/{id}")]
-        public IActionResult ValidateEdit(int id, EditProduct edit)
+        public IActionResult ValidateEdit(int id, ViewProduct edit)
         {
             if(ModelState.IsValid)
             {

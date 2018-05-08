@@ -1,1 +1,37 @@
-<h3 class="text-center">Edit, or make a correction to this address.</h3>
+@model Addresses
+@using RobotJester.Models
+<div class="row">
+    <h3>Edit a address</h3>
+    <form method="POST" asp-controller="Account" asp-action="ValidateAddress">
+        <div class="form-group">
+            <span asp-validation-for="address_line_one"></span>
+            <label asp-for="address_line_one">Address1</label>
+            <input class="form-control" asp-for="address_line_one">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="address_line_two"></span>
+            <label asp-for="address_line_two">Address2</label>
+            <input class="form-control" asp-for="address_line_two">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="city"></span>
+            <label asp-for="city">City</label>
+            <input class="form-control" asp-for="city">
+        </div>
+        <div class="form-group">
+            <input type="text" asp-for="state_or_province">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="zip_or_postal"></span>
+            <label asp-for="zip_or_postal">Zip/Postal</label>
+            <input class="form-control" asp-for="zip_or_postal">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="country"></span>
+            <label asp-for="country">Country</label>
+            <input class="form-control" asp-for="country">
+        </div>
+        
+        <input class="btn-btn-success" type="submit" value="Add">
+    </form>
+</div>

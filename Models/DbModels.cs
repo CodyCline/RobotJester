@@ -54,6 +54,8 @@ namespace RobotJester.Models
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
         public int user_id { get; set; } //FOREIGN KEY
+
+        public float total { get; set; }
         public List<Cart_Items> items_in_cart { get; set; }
 
 

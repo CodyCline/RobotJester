@@ -22,6 +22,8 @@ namespace RobotJester.Controllers
 
         
 
+        
+
         [HttpGet]
         [Route("Login")]
         public IActionResult Login()
@@ -29,7 +31,7 @@ namespace RobotJester.Controllers
             return View();
         }  
 
-        //LOGIN USERS CHANGE TO ASYNC METHOD LATER WITH POSTGRES + IDENTITY CLAIMS
+        //Login users
         [HttpPost]
         [Route("Login")]
         public IActionResult Login(LogUser user)
@@ -142,6 +144,8 @@ namespace RobotJester.Controllers
             return View(all_items);
         }
 
+        //CRUD for addresses
+        
         [HttpGet]
         [Route("Account/Addresses")]
         public IActionResult AddressView()
@@ -159,6 +163,7 @@ namespace RobotJester.Controllers
             return View();
         }
 
+        
 
         [HttpPost]
         [Route("Account/Addresses/New")]
@@ -169,12 +174,12 @@ namespace RobotJester.Controllers
             {
                 Addresses address = new Addresses
                 {
-                    address_line_one = newAddress.Address_One,
-                    address_line_two = newAddress.Address_Two,
-                    city = newAddress.City,
-                    state_or_province = newAddress.State_Province,
-                    zip_or_postal = newAddress.Zip_Postal,
-                    country = newAddress.Country,
+                    address_line_one = newAddress.address_line_one,
+                    address_line_two = newAddress.address_line_two,
+                    city = newAddress.city,
+                    state_or_province = newAddress.state_or_province,
+                    zip_or_postal = newAddress.zip_or_postal,
+                    country = newAddress.country,
                     created_at = DateTime.Now,
                     updated_at = DateTime.Now,
                     user_id = (int)session_id,  
@@ -185,6 +190,51 @@ namespace RobotJester.Controllers
                 return RedirectToAction("AddressView");
             }
             return View("NewAddress", newAddress);
+        }
+
+        [HttpGet]
+        [Route("Account/Addresses/Edit/{id}")]
+        public IActionResult EditAddress(int id)
+        {
+            Addresses edit = _context.addresses.SingleOrDefault(address => address.address_id == id);
+            return View(edit);
+        }
+
+        [HttpPost]
+        [Route("Account/Addresses/Edit/{id}")]
+        public IActionResult ValidateEdit(int id, NewAddress edit)
+        {
+            if(ModelState.IsValid)
+            {
+                Addresses current_address = _context.addresses.SingleOrDefault(a => a.address_id == id);
+                {
+                    current_address.address_line_one = edit.address_line_one;
+                    current_address.address_line_two = edit.address_line_two; 
+                    current_address.city = edit.city;
+                    current_address.state_or_province = edit.state_or_province;
+                    current_address.zip_or_postal = edit.zip_or_postal;
+                    current_address.country = edit.country;
+                    current_address.updated_at = DateTime.Now;
+                    _context.SaveChanges();
+                };
+                return RedirectToAction("AddressView");
+            }
+            return View("EditAddress", edit);
+        }
+
+        [HttpGet]
+        [Route("Account/Addresses/Delete/{id}")]
+        public IActionResult DeleteAddress(int id)
+        {
+            int? session_id = HttpContext.Session.GetInt32("id");
+            Addresses item_to_be_removed = _context.addresses.SingleOrDefault(i => i.address_id == id);
+            if(item_to_be_removed == null)
+            {
+                return RedirectToAction("Index");
+            }
+            _context.Remove(item_to_be_removed);
+            _context.SaveChanges();
+            return RedirectToAction("AddressView", "Account");
         }
 
         

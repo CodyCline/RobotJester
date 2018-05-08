@@ -48,23 +48,23 @@ namespace RobotJester.Models
     {
         [Required]
         [MinLength(6)]
-        public string Address_One { get; set; }
+        public string address_line_one { get; set; }
         
         
-        public string Address_Two { get; set; }
+        public string address_line_two { get; set; }
 
         [Required]
         [MinLength(2)]
-        public string City { get; set; }
+        public string city { get; set; }
 
         
-        public string State_Province { get; set; }
+        public string state_or_province { get; set; }
 
         [Required]
-        public int Zip_Postal { get; set; }
+        public int zip_or_postal { get; set; }
 
         
-        public string Country { get; set; }
+        public string country { get; set; }
     }
 
 }

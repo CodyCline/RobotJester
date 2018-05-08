@@ -1,14 +1,35 @@
 @using RobotJester.Models
 @model List<Addresses>
-<h1 class="text-center">Your address list</h1>
+<h1 class="text-center">Your addresses</h1>
 
-@foreach(var a in Model)
-{
-    <div class="container">
-        <p>@a.address_line_one</p>
-        <p><a href="/Addresses/Edit/@a.address_id">Make a correction</a></p>
-
-    </div>
-}
-
-<a asp-action="NewAddress" asp-controller="Account"><h3><span class="glyphicon glyphicon-plus"></span> Add a new address</h3></a>
+<div class="container">
+    <a asp-action="NewAddress" asp-controller="Account"><h3><span class="glyphicon glyphicon-plus"></span> Add a new address</h3></a>
+    @foreach(var a in Model)
+    {      
+        <div class="row">            
+            <div class="col-md-4">
+                <div class="well">
+                    <address>
+                        <h4><strong>Home address</strong></h4>
+                        @a.corresponding_user.first_name @a.corresponding_user.last_name<br>
+                        @a.address_line_one<br>
+                        @if(a.address_line_two == null)
+                        {
+                            // If they have no address line two (such as a apt. number) 
+                            //then this field is left blank with no text
+                        }
+                        else
+                        {
+                            @a.address_line_two <br>
+                        }
+                        @a.city, @a.state_or_province @a.zip_or_postal<br>
+                        @a.country<br>
+                        Phone: @a.corresponding_user.phone<br>    
+                    </address>
+                    <a href="/Account/Addresses/Edit/@a.address_id">Edit</a> | <a href="/Account/Addresses/Delete/@a.address_id">Delete</a>
+                </div>
+            </div>
+        </div>
+        
+    }
+</div>

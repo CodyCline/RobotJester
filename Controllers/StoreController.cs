@@ -78,8 +78,20 @@ namespace RobotJester.Controllers
             
             int? session_id = HttpContext.Session.GetInt32("id");
             Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
-            Cart_Items cart_check = _context.cart_items.FirstOrDefault(c => c.cart_id == (int)session_id); //Check if the item is already in cart
+            List<Cart_Items> item_check = _context.cart_items.Where(i => i.cart_id == (int)session_id).ToList();
             
+            //Loop through item_check to see if it's already in the cart
+            foreach(var i in item_check)
+            {
+                if(i.product_id == product_id)
+                {
+                    i.quantity += quantity;
+                    _context.SaveChanges();
+                    TempData["Success"] = "Product added to your cart test 3";
+                    return RedirectToAction("Show");
+                }
+            }
+
             //Null check in case the user is doing something weird like adding 0 items or manipulating the HTML form
             if(added_prod == null || quantity < 1) 
             {
@@ -91,16 +103,8 @@ namespace RobotJester.Controllers
                 TempData["Error"] = "You must register or log in in to purchase our treasures!";
                 return RedirectToAction("Show");
             }
-            //Check if item is in the cart. If true (not null) then update existing cart
-            else if(cart_check != null)
-            {
-                cart_check.quantity += quantity;
-                _context.SaveChanges();
-                TempData["Success"] = "Product added to your cart successfully!";
-                return RedirectToAction("Show");
-
-            }
             
+            //Create new item to add to cart
             else
             {
                 Cart_Items new_item = new Cart_Items
@@ -108,11 +112,10 @@ namespace RobotJester.Controllers
                     product_id = added_prod.product_id,
                     cart_id = (int)session_id,
                     quantity = quantity
-
                 };
                 _context.Add(new_item);
                 _context.SaveChanges();
-                TempData["Success"] = "Product added to your cart successfully!";
+                TempData["Success"] = "Product added to your cart test 2";
                 return RedirectToAction("Show");
             }
             return View("Show");   
@@ -157,7 +160,10 @@ namespace RobotJester.Controllers
                 return RedirectToAction("CartView", "Account");
             }
             
+            
         }
+
+        
 
         [HttpGet]
         [Route("Remove/Item/{id}")]

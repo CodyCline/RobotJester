@@ -1,7 +1,7 @@
 @using RobotJester.Models
 @model RobotJester.Models.NewAddress
 <div class="row">
-    <h3>Create address</h3>
+    <h3 class="text-center">Create a new address</h3>
     <form method="POST" asp-controller="Account" asp-action="ValidateAddress">
         <div class="form-group">
             <span asp-validation-for="address_line_one"></span>
@@ -20,7 +20,9 @@
         </div>
         <div class="form-group">
             <label for="">State/Province</label>
-            <select class="form-control">
+            <select asp-for="state_or_province" class="form-control">
+                <option value="DIS" disabled selected="selected">Please Select</option>
+                <li class="divider"></li>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option>
@@ -78,6 +80,20 @@
                 <option value="PR">Puerto Rico</option>
                 <option value="UM">United States Minor Outlying Islands</option>
                 <option value="VI">Virgin Islands</option>
+                <option value="DIS2" disabled>Canadian Provinces</option>
+                <option value="AB">Alberta</option>
+                <option value="BC">British Columbia</option>
+                <option value="MB">Manitoba</option>
+                <option value="NB">New Brunswick</option>
+                <option value="NL">Newfoundland and Labrador</option>
+                <option value="NS">Nova Scotia</option>
+                <option value="ON">Ontario</option>
+                <option value="PE">Prince Edward Island</option>
+                <option value="QC">Quebec</option>
+                <option value="SK">Saskatchewan</option>
+                <option value="NT">Northwest Territories</option>
+                <option value="NU">Nunavut</option>
+                <option value="YT">Yukon</option>
             </select>
         </div>
         <div class="form-group">
@@ -87,12 +103,13 @@
         </div>
         <div class="form-group">
             <label for="">Country</label>
-            <select class="form-control">
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
+            <select asp-for="country" class="form-control">
+                <option value="DIS" disabled selected="selected">Please Select</option>
+                <option value="United States">United States</option>
+                <option value="Canada">Canada</option>
             </select>
         </div>
         
-        <input class="btn-btn-success" type="submit" value="Add">
+        <input class="btn-btn-success"  type="submit" value="Save">
     </form>
 </div>

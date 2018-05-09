@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using RobotJester.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using RobotJester.Models;
 
 namespace RobotJester.Controllers
 {
@@ -102,6 +99,7 @@ namespace RobotJester.Controllers
                     user_id = (int)session_id,
                     created_at = DateTime.Today,
                     updated_at = DateTime.Today,
+                    total = 0,
                 };
                 _context.Add(user_cart);
                 _context.SaveChanges();                

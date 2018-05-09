@@ -3,11 +3,12 @@
 <h1 class="text-center">Your addresses</h1>
 
 <div class="container">
+    <div class="row"> 
     <a asp-action="NewAddress" asp-controller="Account"><h3><span class="glyphicon glyphicon-plus"></span> Add a new address</h3></a>
     @foreach(var a in Model)
     {      
-        <div class="row">            
-            <div class="col-md-4">
+                   
+            <div class="col-sm-3">
                 <div class="well">
                     <address>
                         <h4><strong>Home address</strong></h4>
@@ -29,7 +30,8 @@
                     <a href="/Account/Addresses/Edit/@a.address_id">Edit</a> | <a href="/Account/Addresses/Delete/@a.address_id">Delete</a>
                 </div>
             </div>
-        </div>
+        
         
     }
+    </div>
 </div>

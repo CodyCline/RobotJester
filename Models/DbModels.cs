@@ -78,17 +78,17 @@ namespace RobotJester.Models
         [Key]
         public int order_id { get; set; } //PRIMARY KEY
         public int user_id { get; set; } //FORIEGN KEY
+        public int item_id { get; set; } //FORIEGN KEY
+        public int product_id { get; set; } //FORIEGN KEY
+        public int cart_id { get; set; } //FORIEGN KEY
         public int address_id { get; set; } //FOREIGN KEY
-        public int quantity { get; set; }
-        public float total_billed { get; set; }
+        public float subtotal { get; set; }
         public float tax { get; set; }
+        public float total_billed { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
-        public Addresses order_address { get; set; }
 
-        //Seriously bugged
-        // public List<Cart_Items> product_ordered { get; set; }
-        public User user_who_ordered { get; set; }
+        //Accessing properties
     }
 
     public class Addresses

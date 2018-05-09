@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RobotJester.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 
 namespace RobotJester.Controllers
 {
     public class StoreController : Controller
     {
         private StoreContext _context;
- 
         public StoreController(StoreContext context)
         {
             _context = context;
@@ -59,11 +55,19 @@ namespace RobotJester.Controllers
         //VIEW SPECIFIC ITEM AND GET DETAILS
 
         [HttpGet]
-        [Route("Product/{id}")]
+        [Route("Products/{id}")]
         public IActionResult Show(int id)
         {
             Products show = _context.products.SingleOrDefault(item => item.product_id == id);
-            return View(show);
+            if(show == null)
+            {
+                return RedirectToAction("Index", "StatusCode");
+            }
+            else 
+            {
+                return View(show);
+            }
+            
         }
 
         //Add to cart 
@@ -78,16 +82,19 @@ namespace RobotJester.Controllers
             
             int? session_id = HttpContext.Session.GetInt32("id");
             Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
-            List<Cart_Items> item_check = _context.cart_items.Where(i => i.cart_id == (int)session_id).ToList();
-            
+            List<Cart_Items> item_check = _context.cart_items.Include(u => u.user_cart).Where(i => i.cart_id == (int)session_id).ToList();
+            Cart cart_query = _context.carts.SingleOrDefault(c => c.cart_id == (int)session_id);
+             
             //Loop through item_check to see if it's already in the cart
             foreach(var i in item_check)
             {
                 if(i.product_id == product_id)
                 {
                     i.quantity += quantity;
+                    i.user_cart.total += quantity * added_prod.price;
+                    
                     _context.SaveChanges();
-                    TempData["Success"] = "Product added to your cart test 3";
+                    TempData["Success"] = "Product added to your cart successfully!";
                     return RedirectToAction("Show");
                 }
             }
@@ -111,11 +118,15 @@ namespace RobotJester.Controllers
                 {
                     product_id = added_prod.product_id,
                     cart_id = (int)session_id,
-                    quantity = quantity
+                    quantity = quantity,
+                    
+                    
                 };
+
+                cart_query.total += quantity * added_prod.price;
                 _context.Add(new_item);
                 _context.SaveChanges();
-                TempData["Success"] = "Product added to your cart test 2";
+                TempData["Success"] = "Product added to your cart successfully!";
                 return RedirectToAction("Show");
             }
             return View("Show");   
@@ -123,61 +134,91 @@ namespace RobotJester.Controllers
             
         }
 
-        //Update quantity from manage cart section need overhaul    
+        //Update quantity from manage cart section   
         [HttpPost]
         [Route("Update/Cart")]
-        public IActionResult UpdateCart(int quantity) 
+        public IActionResult UpdateCart(int quantity, int update_id) 
         {
-            //Note: if a user has a duplicate item in their cart it will throw a serious error
             int? session_id = HttpContext.Session.GetInt32("id");
-            Cart_Items updated_item = _context.cart_items.Include(p => p.all_items).FirstOrDefault(c => c.cart_id == (int)session_id);
-
+            Cart_Items updated_item = _context.cart_items.Include(p => p.all_items).SingleOrDefault(c => c.product_id == update_id);
+            Products product_updated = _context.products.SingleOrDefault(w => w.product_id == updated_item.product_id);
+            Cart cart_query = _context.carts.SingleOrDefault(c => c.user_id == (int)session_id);
             if(session_id == null)
             {
                 return RedirectToAction("Index", "Store");
             }
-
             //Query the item that needs to be updated
-            
             /* 
             Will also need to query the cart to update their total as well
             reduce or increase their total with if statement
-
-            if(updated_item.quantity > quantity)
-            {
-                cart_query.total -= updated_item.quantity * updated_item.all_items.price;
-            }
-            else if(updated_item.quantity < quantity)
-            {
-                cart_query.total += updated_item.quantity * updated_item.all_items.price;
-            }
             */
-            else
-            {            
+            else if(updated_item.quantity == quantity)
+            {
+                TempData["Update"] = "Item updated successfully (equal method)";
+                return RedirectToAction("CartView", "Account");
+            }
+            else if(updated_item.quantity > quantity)
+            {
+                // cart_query.total += product_updated.price * updated_item.quantity;
+                // _context.SaveChanges();
+                for(var i = updated_item.quantity; i > quantity; i--)
+                {
+                    cart_query.total -= product_updated.price;
+                    _context.SaveChanges();
+                }
+                
+                // var diff = cart_query.total - updated_item.quantity;
+                // cart_query.total -=;
+
+                // cart_query.total -= product_updated.price * updated_item.quantity;
+                cart_query.updated_at = DateTime.Now;
                 updated_item.quantity = quantity;
                 _context.SaveChanges();
-                TempData["Update"] = "Item updated successfully";
+                TempData["Update"] = "Item updated successfully (subtract method)";
+                return RedirectToAction("CartView", "Account");
+
+            }
+            else
+            {
+                for(var i = updated_item.quantity; i < quantity; i++)
+                {
+                    cart_query.total += product_updated.price;
+                    _context.SaveChanges();
+                }
+                // cart_query.total -= product_updated.price * updated_item.quantity;
+                // _context.SaveChanges();
+                // cart_query.total += product_updated.price * quantity;
+                cart_query.updated_at = DateTime.Now;
+                updated_item.quantity = quantity;
+                _context.SaveChanges();
+                TempData["Update"] = "Item updated successfully (increase method)";
                 return RedirectToAction("CartView", "Account");
             }
             
             
-        }
-
-        
+        }       
 
         [HttpGet]
         [Route("Remove/Item/{id}")]
         public IActionResult RemoveFromCart(int id)
         {
             int? session_id = HttpContext.Session.GetInt32("id");
+            
             Cart_Items item_to_be_removed = _context.cart_items.SingleOrDefault(i => i.item_id == id);
-            if(item_to_be_removed == null || item_to_be_removed.cart_id != (int)session_id)
+            Cart cart_query = _context.carts.SingleOrDefault(c => c.user_id == (int)session_id);
+            Products product_being_removed = _context.products.SingleOrDefault(w => w.product_id == item_to_be_removed.product_id);
+            if(item_to_be_removed == null || item_to_be_removed.cart_id != (int)session_id || cart_query == null)
             {
                 return RedirectToAction("Index");
             }
-            _context.Remove(item_to_be_removed);
-            _context.SaveChanges();
-            return RedirectToAction("CartView", "Account");
+            else
+            {
+                cart_query.total -= product_being_removed.price * item_to_be_removed.quantity;
+                cart_query.updated_at = DateTime.Now; 
+                _context.Remove(item_to_be_removed);
+                _context.SaveChanges();
+                return RedirectToAction("CartView", "Account");
+            }
         }
 
         [HttpGet]
@@ -185,6 +226,16 @@ namespace RobotJester.Controllers
         public IActionResult Checkout()
         {
             return View();
+        }
+
+        [HttpPost]
+        [Route("Checkout")]
+        public IActionResult ValidateCheckout()
+        {
+            /* This is where orders will be processed.
+            TODO: 
+            */
+            return RedirectToAction("Manage", "Account");
         }
 
 

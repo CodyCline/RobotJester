@@ -6,6 +6,7 @@ using RobotJester.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Stripe;
+using System.Diagnostics;
 
 namespace RobotJester.Controllers
 {
@@ -214,8 +215,11 @@ namespace RobotJester.Controllers
         public IActionResult Checkout()
         {
             int? session_id = HttpContext.Session.GetInt32("id");
+            //For displaying on the front end
             List<Addresses> addr_list = _context.addresses.Where(a => a.user_id == (int)session_id).ToList();
             ViewBag.AddressList = addr_list;
+            List<Cart_Items> cart_list = _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == (int)session_id).ToList();
+            ViewBag.Items = cart_list;
             return View();
         }
 
@@ -235,24 +239,25 @@ namespace RobotJester.Controllers
 
         [HttpPost]
         [Route("Charge")]
-        public IActionResult Charge(string stripeEmail, string stripeToken)
+        public IActionResult Charge(string stripeEmail, string stripeToken, int total)
         {
+            
             var customerService = new StripeCustomerService();
             var chargeService = new StripeChargeService();
+            Debug.WriteLine("stripe token is " + stripeToken);
+            Debug.WriteLine("stripe email is " + stripeEmail);
+
 
             var customer = customerService.Create(new StripeCustomerCreateOptions {
                 Email = stripeEmail,
-                // SourceToken = stripeToken,
-
+                SourceToken = stripeToken,
             });
-
             var charge = chargeService.Create(new StripeChargeCreateOptions {
-                Amount = 500,
-                Description = "RobotJester items",
+                Amount = total,
+                Description = "RobotJester Checkout",
                 Currency = "usd",
                 CustomerId = customer.Id
             });
-
             return View("Charge");
         }
 

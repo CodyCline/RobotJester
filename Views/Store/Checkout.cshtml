@@ -1,28 +1,43 @@
 @using Microsoft.Extensions.Options
 @inject IOptions<StripeSettings> Stripe
+@inject LoggedInUserService userService  
 
-<!-- <form action="/Store/Charge" method="POST">
-    <label for="">Amount: 5.00</label>
-    <script 
-        src="https://checkout.stripe.com/checkout.js"> 
-        class="stripe-button"
-        data-key="@Stripe.Value.PublishableKey"
-        data-description="Checkout robot jester"
-        data-amount="500"
-        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-        data-locale="auto">
+	<!-- For converting dollars into cents for stripe to process -->
+	@{
+		var total = @userService.user_total.total * 100;
+	}
+	
 
-    </script>
+
+<div class="container">
+    <form asp-action="Charge" method="POST">
+        <script
+            src="https://checkout.stripe.com/checkout.js"
+            class="stripe-button"
+            data-key="@Stripe.Value.PublishableKey"
+    		data-name="Robot Jester!"
+    		data-description="@userService.get_sum.Count Items, $@userService.user_total.total"
+    		data-amount="@total">
+  		</script>
+		<input type="hidden" value="@total" name="total" required>
+	</form>
+</div>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<!-- <form action="/Charge" method="post" id="payment-form">
+  <div class="form-row">
+    <label for="card-element">
+      Credit or debit card
+    </label>
+    <div class="input" id="card-element"> -->
+      <!-- A Stripe Element will be inserted here. -->
+    <!-- </div> -->
+
+    <!-- Used to display form errors. -->
+    <!-- <div id="card-errors" role="alert"></div>
+  </div>
+
+  <button class="btn btn-sm btn-primary">Submit Payment</button>
 </form> -->
-
-<form action="/Charge" method="POST">
-  <script
-    src="https://checkout.stripe.com/checkout.js"
-    class="stripe-button"
-    data-key="@Stripe.Value.PublishableKey"
-    data-name="Robot Jester!"
-    data-description="2 widgets ($20.00)"
-    data-amount="2000">
-  </script>
-</form>
-<!-- data-image="/square-image.png" FOR LATER WITH STORE LOGO -->

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Http;
 using RobotJester.Models;
+using Stripe;
 
 namespace RobotJester
 {
@@ -30,6 +31,8 @@ namespace RobotJester
             services.AddDbContext<StoreContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();  
             services.AddScoped<LoggedInUserService>(); //Grabs specific user data
+            
+            
             services.AddMvc(options => 
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -38,6 +41,7 @@ namespace RobotJester
                 
 
             });
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             services.AddSession(options => 
             {
                 options.Cookie.Name = "LoginCookie";
@@ -68,7 +72,8 @@ namespace RobotJester
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
+            app.UseStatusCodePagesWithReExecute("/StatusCode/{0}"); //For HTTP errors
+            StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
 
             //Security headers
             app.UseForwardedHeaders(new ForwardedHeadersOptions

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using RobotJester.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
-
+using Stripe;
 
 namespace RobotJester.Controllers
 {
@@ -228,8 +228,32 @@ namespace RobotJester.Controllers
             This is where orders will be processed.
             TODO: Stripe.js on front-end for credit cards and use data in backend. 
             File order into database and charge user.
+            Change product instock_quantity with for loop for each of their items
             */
             return RedirectToAction("Manage", "Account");
+        }
+
+        [HttpPost]
+        [Route("Charge")]
+        public IActionResult Charge(string stripeEmail, string stripeToken)
+        {
+            var customerService = new StripeCustomerService();
+            var chargeService = new StripeChargeService();
+
+            var customer = customerService.Create(new StripeCustomerCreateOptions {
+                Email = stripeEmail,
+                // SourceToken = stripeToken,
+
+            });
+
+            var charge = chargeService.Create(new StripeChargeCreateOptions {
+                Amount = 500,
+                Description = "RobotJester items",
+                Currency = "usd",
+                CustomerId = customer.Id
+            });
+
+            return View("Charge");
         }
 
 

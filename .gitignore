@@ -22,9 +22,9 @@ _UpgradeReport_Files/
 ###############
 # Directories #
 ###############
-bin/
-obj/
-.vscode/
+/bin/
+/obj/
+/.vscode/
 TestResults/
 ###################
 # Web publish log #

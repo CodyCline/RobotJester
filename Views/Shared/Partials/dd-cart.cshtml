@@ -3,7 +3,7 @@
 @inject LoggedInUserService userService  
 <ul class="nav navbar-nav navbar-left">
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Your cart <span class="glyphicon glyphicon-shopping-cart"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Your cart <span class="glyphicon glyphicon-shopping-cart"></span> (@userService.get_sum.Count)</a>
         <ul id="login-dp" class="dropdown-menu">
             <li>
                 <div class="row">
@@ -11,26 +11,24 @@
                     <table class="table table-hover table-bordered table-responsive">
                         <thead>
                             <tr>
-                                <th><span class="glyphicon glyphicon-barcode"></span> Item</th>
-                                <th><span class="glyphicon glyphicon-list-alt"></span> Quantity</th>
-                                <th><span class="glyphicon glyphicon-usd"></span> Price</th>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach(var i in @userService.user_cart)
                             {
                                 <tr>
-                                    <td><a href="/Product/@i.all_items.product_id">@i.all_items.name</a></td>
+                                    <td><a href="/Products/@i.all_items.product_id">@i.all_items.name</a></td>
                                     <td>@i.quantity</td>
-                                    <td>@i.all_items.price</td>
+                                    <td>$@i.all_items.price</td>
                                 </tr>
                             }                          
                             <tr>
                                 <td></td>
                                 <th class="text-right"><strong>Total: </strong></th>
-                                <td>
-                                    <!-- Foreach loop for price? Might need to store total in cart DB table -->
-                                </td>
+                                <td>$@userService.user_total.total</td>
                             </tr>
                             
                         </tbody>

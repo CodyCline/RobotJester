@@ -69,8 +69,6 @@ namespace RobotJester.Controllers
             }
             
         }
-
-        //Add to cart 
         /*
         TODO: If the user already added that specific item to their cart 
         Update the quantity instead of adding a seperate item
@@ -119,10 +117,7 @@ namespace RobotJester.Controllers
                     product_id = added_prod.product_id,
                     cart_id = (int)session_id,
                     quantity = quantity,
-                    
-                    
                 };
-
                 cart_query.total += quantity * added_prod.price;
                 _context.Add(new_item);
                 _context.SaveChanges();
@@ -152,46 +147,39 @@ namespace RobotJester.Controllers
             Will also need to query the cart to update their total as well
             reduce or increase their total with if statement
             */
-            else if(updated_item.quantity == quantity)
-            {
-                TempData["Update"] = "Item updated successfully (equal method)";
-                return RedirectToAction("CartView", "Account");
-            }
+            
             else if(updated_item.quantity > quantity)
             {
-                // cart_query.total += product_updated.price * updated_item.quantity;
-                // _context.SaveChanges();
+                //Loop through the difference between the current quantity and entered quantity decreasing the price each time
                 for(var i = updated_item.quantity; i > quantity; i--)
                 {
                     cart_query.total -= product_updated.price;
                     _context.SaveChanges();
                 }
-                
-                // var diff = cart_query.total - updated_item.quantity;
-                // cart_query.total -=;
-
-                // cart_query.total -= product_updated.price * updated_item.quantity;
                 cart_query.updated_at = DateTime.Now;
                 updated_item.quantity = quantity;
                 _context.SaveChanges();
-                TempData["Update"] = "Item updated successfully (subtract method)";
+                TempData["Update"] = "Item updated successfully!";
                 return RedirectToAction("CartView", "Account");
 
             }
+            else if(updated_item.quantity == quantity)
+            {
+                TempData["Update"] = "Item updated successfully!";
+                return RedirectToAction("CartView", "Account");
+            }
             else
             {
+                //Loop through the difference between the current quantity and entered quantity increasing the price each time
                 for(var i = updated_item.quantity; i < quantity; i++)
                 {
                     cart_query.total += product_updated.price;
                     _context.SaveChanges();
                 }
-                // cart_query.total -= product_updated.price * updated_item.quantity;
-                // _context.SaveChanges();
-                // cart_query.total += product_updated.price * quantity;
                 cart_query.updated_at = DateTime.Now;
                 updated_item.quantity = quantity;
                 _context.SaveChanges();
-                TempData["Update"] = "Item updated successfully (increase method)";
+                TempData["Update"] = "Item updated successfully!";
                 return RedirectToAction("CartView", "Account");
             }
             
@@ -225,6 +213,9 @@ namespace RobotJester.Controllers
         [Route("Checkout")]
         public IActionResult Checkout()
         {
+            int? session_id = HttpContext.Session.GetInt32("id");
+            List<Addresses> addr_list = _context.addresses.Where(a => a.user_id == (int)session_id).ToList();
+            ViewBag.AddressList = addr_list;
             return View();
         }
 
@@ -232,8 +223,11 @@ namespace RobotJester.Controllers
         [Route("Checkout")]
         public IActionResult ValidateCheckout()
         {
-            /* This is where orders will be processed.
-            TODO: 
+            
+            /*
+            This is where orders will be processed.
+            TODO: Stripe.js on front-end for credit cards and use data in backend. 
+            File order into database and charge user.
             */
             return RedirectToAction("Manage", "Account");
         }

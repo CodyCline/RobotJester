@@ -10,16 +10,12 @@ using RobotJester.Models;
 namespace RobotJester.Controllers
 {
     public class AccountController : Controller
-    {     
+    {
         private StoreContext _context;
         public AccountController(StoreContext context)
         {
             _context = context;
         }
-
-        
-
-        
 
         [HttpGet]
         [Route("Login")]
@@ -53,7 +49,6 @@ namespace RobotJester.Controllers
             HttpContext.Session.SetString("active_user", user_logging_in.first_name);
             return RedirectToAction("Manage");
         }
-
         
         [HttpGet]
         [Route("Register")]
@@ -80,10 +75,8 @@ namespace RobotJester.Controllers
                     last_name = newUser.last_name,
                     email = newUser.email,
                     password = hasher.HashPassword(newUser, newUser.password),
-                    created_at = DateTime.Today,
-                    updated_at = DateTime.Today,
-
-
+                    created_at = DateTime.Now,
+                    updated_at = DateTime.Now
                 };
                 User new_user = _context.Add(User).Entity;
                 _context.SaveChanges();
@@ -113,12 +106,10 @@ namespace RobotJester.Controllers
         [Route("Logout")]
         public IActionResult Logout()
         {
-
             foreach (var cookie in Request.Cookies.Keys) //Removes all cookies
             {
                 Response.Cookies.Delete(cookie);
             }
-            
             return RedirectToAction("Index", "Store");
         }
               

@@ -42,8 +42,15 @@
             <form role="form">
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
-                        <h3>Step 1</h3>
-                        <p>This is step 1</p>
+                        <h3 class="text-center">Choose Address</h3>
+                        <select>
+                            @foreach(var a in ViewBag.AddressList)
+                            {
+                                <option value="">@a.address_line_one</option>
+                            }
+                            <!-- FOREACH LOOP -->
+                        </select>
+                        <p class="text-center">This is step 1</p>
                         <ul class="list-inline pull-right">
                             <li><button type="button" class="btn btn-primary next-step">Save and continue</button></li>
                         </ul>

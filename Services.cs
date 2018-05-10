@@ -38,6 +38,28 @@ namespace RobotJester
             get {
                 int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
                 return _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == userSessionId).ToList();
+                
+            }
+
+        }
+        //Item count in user cart injectable into any view
+        public List<Cart_Items> get_sum
+        {
+            get {
+                int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
+                // var sum = (from t in _context.cart_items where t.cart_id==userSessionId select t.quantity).Sum(); Later on, query the cart to add up the quantities.
+                return _context.cart_items.Where(u => u.cart_id == userSessionId).ToList();                
+            }
+
+        }
+
+        //User total displayed on any desired view.
+        public Cart user_total
+        {
+            get {
+                int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
+                return _context.carts.FirstOrDefault(a => a.cart_id == userSessionId);
+                
             }
 
         }

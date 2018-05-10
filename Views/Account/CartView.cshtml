@@ -1,8 +1,10 @@
 @using RobotJester.Models
 @model List<RobotJester.Models.Cart_Items>
+@inject LoggedInUserService userService
 <h3 class="text-center">Your cart</h3>
 <p class="text-center">@TempData["Update"]</p>
 <table class="table table-hover table-striped table-responsive">
+    
     <thead>
         <tr>
             <th><span class="glyphicon glyphicon-barcode"></span> Item</th>
@@ -14,7 +16,7 @@
         @foreach(var i in @Model)
         {
             <tr>
-                <td><a href="/Product/@i.all_items.product_id">@i.all_items.name</a></td>
+                <td><a href="/Products/@i.all_items.product_id">@i.all_items.name</a></td>
                 <td>
                     <form method="POST" asp-controller="Store" asp-action="UpdateCart">
                         
@@ -32,6 +34,7 @@
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </a>
+                    
                 </td>                                                            
             </tr>                
         }
@@ -39,9 +42,7 @@
             <td></td>
             <td></td>
             <td><strong>Total: </strong></td>
-            <td>
-                <strong>$TBD</strong>
-            </td>
+            <td><strong>$@userService.user_total.total</strong></td>
         </tr>                         
                                     
     </tbody>

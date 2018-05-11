@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RobotJester.Controllers;
 
+//For handling all bad HTTP requests and serving a single error
 public class StatusCodeController : Controller
 {
 	private readonly ILogger<StoreController> _logger;

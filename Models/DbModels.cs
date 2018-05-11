@@ -35,15 +35,7 @@ namespace RobotJester.Models
         public string password { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
-        public int privledge_level { get; set; }
-        
-        //For dashboard display (may deprecate later)
-        public List<Orders> all_orders { get; set; }
-        
-        public List<Addresses> address_list { get;set;}
-        public List<Reviews> reviews_made { get; set; }
-
-        
+        public int privledge_level { get; set; }        
     }
 
     public class Cart 
@@ -56,6 +48,7 @@ namespace RobotJester.Models
         public int user_id { get; set; } //FOREIGN KEY
 
         public float total { get; set; }
+        //Ef core
         public List<Cart_Items> items_in_cart { get; set; }
 
 
@@ -68,8 +61,21 @@ namespace RobotJester.Models
         public int product_id { get; set; } //Foreign key
         public int cart_id { get; set; } //Foreign key
         public int quantity { get; set; }
+        public DateTime created_at { get; set; }
+        public DateTime updated_at { get; set; }
+        //EF Core
         public Products all_items { get; set; }
         public Cart user_cart { get; set; }
+
+    }
+
+    public class order_items 
+    {
+        public int order_items_id { get; set; } //Primary key
+        public int order_id { get; set; } //Foreign key: Has nothing to do with this table it's the matching id to join the orders table
+        public int item_id { get; set; } //Foregin key -- cart_items table
+        public int product_id { get; set; } //Foregin key -- cart_items table
+        public int cart_id { get; set; } //Foregin key -- cart_items table
 
     }
 
@@ -78,9 +84,6 @@ namespace RobotJester.Models
         [Key]
         public int order_id { get; set; } //PRIMARY KEY
         public int user_id { get; set; } //FORIEGN KEY
-        public int item_id { get; set; } //FORIEGN KEY
-        public int product_id { get; set; } //FORIEGN KEY
-        public int cart_id { get; set; } //FORIEGN KEY
         public int address_id { get; set; } //FOREIGN KEY
         public float subtotal { get; set; }
         public float tax { get; set; }

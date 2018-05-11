@@ -118,6 +118,8 @@ namespace RobotJester.Controllers
                     product_id = added_prod.product_id,
                     cart_id = (int)session_id,
                     quantity = quantity,
+                    created_at = DateTime.Now,
+                    updated_at = DateTime.Now,
                 };
                 cart_query.total += quantity * added_prod.price;
                 _context.Add(new_item);
@@ -241,13 +243,9 @@ namespace RobotJester.Controllers
         [Route("Charge")]
         public IActionResult Charge(string stripeEmail, string stripeToken, int total)
         {
-            
+            //Stripe server code for initiating the charge for their card
             var customerService = new StripeCustomerService();
             var chargeService = new StripeChargeService();
-            Debug.WriteLine("stripe token is " + stripeToken);
-            Debug.WriteLine("stripe email is " + stripeEmail);
-
-
             var customer = customerService.Create(new StripeCustomerCreateOptions {
                 Email = stripeEmail,
                 SourceToken = stripeToken,
@@ -258,7 +256,12 @@ namespace RobotJester.Controllers
                 Currency = "usd",
                 CustomerId = customer.Id
             });
-            return View("Charge");
+            //Update values within the database as well as create a new order 
+            // Orders new_order = new Orders
+            // {
+                
+            // };
+            return View("ChargeSuccess");
         }
 
 

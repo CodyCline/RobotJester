@@ -34,20 +34,18 @@ namespace RobotJester.Models
 
         public string password { get; set; }
         public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
-        public int privledge_level { get; set; }        
+        public DateTime updated_at { get; set; }  
     }
 
     public class Cart 
     {
         [Key]
         public int cart_id { get; set; } //PRIMARY KEY
-        
+        public int user_id { get; set; } //FOREIGN KEY
+        public float total { get; set; }
+        public sbyte is_active { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
-        public int user_id { get; set; } //FOREIGN KEY
-
-        public float total { get; set; }
         //Ef core
         public List<Cart_Items> items_in_cart { get; set; }
 
@@ -60,22 +58,14 @@ namespace RobotJester.Models
         public int item_id { get; set; } //Primary key
         public int product_id { get; set; } //Foreign key
         public int cart_id { get; set; } //Foreign key
+        public int order_id { get; set; }
         public int quantity { get; set; }
+        public sbyte is_active { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
         //EF Core
         public Products all_items { get; set; }
         public Cart user_cart { get; set; }
-
-    }
-
-    public class order_items 
-    {
-        public int order_items_id { get; set; } //Primary key
-        public int order_id { get; set; } //Foreign key: Has nothing to do with this table it's the matching id to join the orders table
-        public int item_id { get; set; } //Foregin key -- cart_items table
-        public int product_id { get; set; } //Foregin key -- cart_items table
-        public int cart_id { get; set; } //Foregin key -- cart_items table
 
     }
 
@@ -92,6 +82,7 @@ namespace RobotJester.Models
         public DateTime updated_at { get; set; }
 
         //Accessing properties
+        public List<Cart_Items> ordered_items { get; set; }
     }
 
     public class Addresses

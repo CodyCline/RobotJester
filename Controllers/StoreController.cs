@@ -74,23 +74,41 @@ namespace RobotJester.Controllers
         TODO: If the user already added that specific item to their cart 
         Update the quantity instead of adding a seperate item
         */
+        
+        //Search the store for products
+        [HttpGet]
+        [Route("Search/q={query}")]
+        public IActionResult Search(string query)
+        {
+            if(!String.IsNullOrEmpty(query))
+            {
+                List<Products> search = _context.products.Where(s => s.name.Contains(query)).ToList();
+                return View(search);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Store");
+            }
+            
+        }
+
+
         [HttpPost]
         [Route("AddToBag/{id}")]
         public IActionResult AddToCart(int product_id, int quantity)
-        {
-            
+        {   
             int? session_id = HttpContext.Session.GetInt32("id");
             Products added_prod = _context.products.SingleOrDefault(p => p.product_id == product_id);
             List<Cart_Items> item_check = _context.cart_items.Include(u => u.user_cart).Where(i => i.cart_id == (int)session_id).ToList();
-            Cart cart_query = _context.carts.SingleOrDefault(c => c.cart_id == (int)session_id);
+            Cart cart_query = _context.carts.SingleOrDefault(c => c.user_id == (int)session_id && c.is_active == 1); 
              
             //Loop through item_check to see if it's already in the cart
             foreach(var i in item_check)
             {
-                if(i.product_id == product_id)
+                if(i.product_id == product_id && i.is_active == 1)
                 {
                     i.quantity += quantity;
-                    i.user_cart.total += quantity * added_prod.price;
+                    cart_query.total += quantity * added_prod.price;
                     
                     _context.SaveChanges();
                     TempData["Success"] = "Product added to your cart successfully!";
@@ -120,6 +138,7 @@ namespace RobotJester.Controllers
                     quantity = quantity,
                     created_at = DateTime.Now,
                     updated_at = DateTime.Now,
+                    is_active = 1
                 };
                 cart_query.total += quantity * added_prod.price;
                 _context.Add(new_item);
@@ -127,7 +146,8 @@ namespace RobotJester.Controllers
                 TempData["Success"] = "Product added to your cart successfully!";
                 return RedirectToAction("Show");
             }
-            return View("Show");   
+            return View("Show"); 
+              
             
             
         }
@@ -137,20 +157,17 @@ namespace RobotJester.Controllers
         [Route("Update/Cart")]
         public IActionResult UpdateCart(int quantity, int update_id) 
         {
+            //Query the cart_item, product, and current cart that needs to be updated
             int? session_id = HttpContext.Session.GetInt32("id");
-            Cart_Items updated_item = _context.cart_items.Include(p => p.all_items).SingleOrDefault(c => c.product_id == update_id);
+            Cart_Items updated_item = _context.cart_items.Include(p => p.all_items).SingleOrDefault(c => c.product_id == update_id && c.is_active==1);
             Products product_updated = _context.products.SingleOrDefault(w => w.product_id == updated_item.product_id);
-            Cart cart_query = _context.carts.SingleOrDefault(c => c.user_id == (int)session_id);
+            Cart cart_query = _context.carts.SingleOrDefault(c => c.user_id == (int)session_id && c.is_active==1);
             if(session_id == null)
             {
                 return RedirectToAction("Index", "Store");
             }
-            //Query the item that needs to be updated
-            /* 
-            Will also need to query the cart to update their total as well
-            reduce or increase their total with if statement
-            */
             
+            //The user total is increased/decreased depending on the 
             else if(updated_item.quantity > quantity)
             {
                 //Loop through the difference between the current quantity and entered quantity decreasing the price each time
@@ -164,7 +181,6 @@ namespace RobotJester.Controllers
                 _context.SaveChanges();
                 TempData["Update"] = "Item updated successfully!";
                 return RedirectToAction("CartView", "Account");
-
             }
             else if(updated_item.quantity == quantity)
             {
@@ -193,10 +209,10 @@ namespace RobotJester.Controllers
         [Route("Remove/Item/{id}")]
         public IActionResult RemoveFromCart(int id)
         {
+            //Remove from cart and update total
             int? session_id = HttpContext.Session.GetInt32("id");
-            
             Cart_Items item_to_be_removed = _context.cart_items.SingleOrDefault(i => i.item_id == id);
-            Cart cart_query = _context.carts.SingleOrDefault(c => c.user_id == (int)session_id);
+            Cart cart_query = _context.carts.SingleOrDefault(c => c.user_id == (int)session_id && c.is_active == 1);
             Products product_being_removed = _context.products.SingleOrDefault(w => w.product_id == item_to_be_removed.product_id);
             if(item_to_be_removed == null || item_to_be_removed.cart_id != (int)session_id || cart_query == null)
             {
@@ -220,28 +236,15 @@ namespace RobotJester.Controllers
             //For displaying on the front end
             List<Addresses> addr_list = _context.addresses.Where(a => a.user_id == (int)session_id).ToList();
             ViewBag.AddressList = addr_list;
+            //May deprecate this later this is for displaying the user's cart items
             List<Cart_Items> cart_list = _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == (int)session_id).ToList();
             ViewBag.Items = cart_list;
             return View();
         }
-
-        [HttpPost]
-        [Route("Checkout")]
-        public IActionResult ValidateCheckout()
-        {
-            
-            /*
-            This is where orders will be processed.
-            TODO: Stripe.js on front-end for credit cards and use data in backend. 
-            File order into database and charge user.
-            Change product instock_quantity with for loop for each of their items
-            */
-            return RedirectToAction("Manage", "Account");
-        }
-
+        
         [HttpPost]
         [Route("Charge")]
-        public IActionResult Charge(string stripeEmail, string stripeToken, int total)
+        public IActionResult Charge(string stripeEmail, string stripeToken, int total, int address_chosen)
         {
             //Stripe server code for initiating the charge for their card
             var customerService = new StripeCustomerService();
@@ -256,11 +259,54 @@ namespace RobotJester.Controllers
                 Currency = "usd",
                 CustomerId = customer.Id
             });
+            //Add address here for taxing purposes
+
+
             //Update values within the database as well as create a new order 
-            // Orders new_order = new Orders
-            // {
+            //Queries to grab
+            int? session_id = HttpContext.Session.GetInt32("id");
+            List<Cart_Items> items_bought = _context.cart_items.Include(i => i.all_items).Where(i => i.cart_id==(int)session_id).ToList();
+            Cart current_cart = _context.carts.SingleOrDefault(c => c.user_id==(int)session_id && c.is_active==1);
+            
+
+            //New order gets created first
+            Orders new_order = new Orders
+            {
+                user_id = (int)session_id,
+                address_id = address_chosen,
+                subtotal = 0, //This field and the one below will created in the future subtotal is cost of items 
+                tax = 0, //This will change to shipping_cost and the tax will be estimated at front end and calculated by stripe
+                total_billed = current_cart.total, //From the form
+                //Stripe transaction token will also be stored for refunding purposes
+                created_at = DateTime.Now,
+                updated_at = DateTime.Now
+            };
+            _context.Add(new_order);
+            _context.SaveChanges();
+            
+            //Change the cart_items state to inactive and assign the incremented order_id
+            foreach(var i in items_bought)
+            {
+                //Update the quantity in stock of product bought
+                Products quantity_change = _context.products.SingleOrDefault(p => p.product_id==i.product_id);
+                quantity_change.instock_quantity -= i.quantity;
+                i.order_id = new_order.order_id;
+                i.is_active = 0;
+                i.updated_at = DateTime.Now;           
+            }
+            current_cart.is_active = 0; //Deactivate the cart
+            current_cart.updated_at = DateTime.Now;
+            Cart new_cart = new Cart
+            {
+                user_id = (int)session_id,
+                total = 0,
+                is_active = 1,
+                created_at = DateTime.Now,
+                updated_at = DateTime.Now,
                 
-            // };
+            };
+            _context.Add(new_cart);
+            _context.SaveChanges();
             return View("ChargeSuccess");
         }
 

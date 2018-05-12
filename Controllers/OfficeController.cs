@@ -25,7 +25,7 @@ namespace RobotJester.Controllers
         }
 
         [HttpGet]
-        [Route("Table")]
+        [Route("Admin/Toolbox")]
         public IActionResult ToolTable()
         {
             return View();        
@@ -133,7 +133,8 @@ namespace RobotJester.Controllers
         [Route("Orders/OrderList")]
         public IActionResult Orders()
         {
-            return View();
+            List<Orders> order_list = _context.orders.ToList();
+            return View(order_list);
         }   
 
         // View specific order with a customer

@@ -37,7 +37,7 @@ namespace RobotJester
         {
             get {
                 int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
-                return _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == userSessionId).ToList();
+                return _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == userSessionId && a.is_active==1).ToList();
                 
             }
 
@@ -48,7 +48,7 @@ namespace RobotJester
             get {
                 int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
                 // var sum = (from t in _context.cart_items where t.cart_id==userSessionId select t.quantity).Sum(); Later on, query the cart to add up the quantities.
-                return _context.cart_items.Where(u => u.cart_id == userSessionId).ToList();                
+                return _context.cart_items.Where(u => u.cart_id == userSessionId && u.is_active == 1).ToList();                
             }
 
         }
@@ -58,8 +58,7 @@ namespace RobotJester
         {
             get {
                 int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
-                return _context.carts.FirstOrDefault(a => a.cart_id == userSessionId);
-                
+                return _context.carts.FirstOrDefault(a => a.user_id == userSessionId && a.is_active == 1);
             }
 
         }

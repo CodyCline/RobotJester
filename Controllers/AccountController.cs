@@ -34,11 +34,12 @@ namespace RobotJester.Controllers
             if(user_logging_in == null)
             {
                 //Check if email exists
-                ModelState.AddModelError("Email", "Invalid Email/Password");
-            }                 
-            else if(hasher.VerifyHashedPassword(user, user_logging_in.password, user.Password) == 0)
+                ModelState.AddModelError("Email", "Sorry, we don't recognize that email");
+            }         
+            
+            else if(hasher.VerifyHashedPassword(user, user_logging_in.password, user.Password) == 0) 
             {
-                ModelState.AddModelError("Password", "Invalid Email/Password");
+                ModelState.AddModelError("Password", "Invalid/Bad Password");
                 return View("Login", user);
             }
             if(!ModelState.IsValid)
@@ -93,6 +94,7 @@ namespace RobotJester.Controllers
                     created_at = DateTime.Today,
                     updated_at = DateTime.Today,
                     total = 0,
+                    is_active = 1,
                 };
                 _context.Add(user_cart);
                 _context.SaveChanges();                
@@ -129,7 +131,7 @@ namespace RobotJester.Controllers
         public IActionResult CartView()
         {
             int? session_id = HttpContext.Session.GetInt32("id");
-            List<Cart_Items> all_items = _context.cart_items.Include(a => a.all_items).Where(a => a.cart_id == (int)session_id).ToList();
+            List<Cart_Items> all_items = _context.cart_items.Include(c => c.user_cart).Include(a => a.all_items).Where(a => a.cart_id == (int)session_id).Where(i => i.is_active==1).ToList(); //.Where(c => c.user_cart.cart_id==1)
             return View(all_items);
         }
 
@@ -225,6 +227,8 @@ namespace RobotJester.Controllers
             _context.SaveChanges();
             return RedirectToAction("AddressView", "Account");
         }
+
+        
 
         
 

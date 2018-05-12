@@ -1,3 +1,5 @@
+@model List<Orders>
+@using RobotJester.Models
 <div class="container">
     <table class="table table-hover">
     <thead>
@@ -10,6 +12,11 @@
     </thead>
         <tbody>
             <tr>
+                <td>Order</td>
+                @foreach(var o in @Model)
+                {
+                    <td>@o.total_billed</td>
+                }
                 <td><a href="/Orders">CLICK CUSTOMER PROFILE</a></td>
                 <td>
                     <!-- 
@@ -19,7 +26,6 @@
                     <a href="/Orders">Shoes</a>
                     <a href="/Orders">Candles</a>
                 </td>
-                <td>@DateTime.Now.ToString("D")</td>
                 <td><button class="btn btn-success">Approve</button><button class="btn btn-danger">Deny</button></td>
                 
             </tr>

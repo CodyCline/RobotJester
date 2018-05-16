@@ -1,16 +1,40 @@
-﻿.body {
+﻿@import url('https://fonts.googleapis.com/css?family=Acme|Bangers|Anton');
+
+/* Main elements */
+
+h1 { 
+   font-family: 'Anton', sans-serif;
+   font-size: 4.25em;
+}
+
+
+
+p {
+    font-family: 'Anton';
+
+}
+a {
+    font-family: 'Acme', sans-serif;
+    color: rgb(68, 29, 211);
+    font-size: 1.15em;
+}
+
+.body {
     background-color: whitesmoke;
     padding-bottom: 3em;
 }
 
+/* Navbar in _Layout */
 
 #main-nav {
     /* OVERRIDES THE DEFAULT NAVBAR STYLE */
     border-radius: 0px;
     border: 0px;
+    background-color: rgb(62,35,87);
     
 }
 
+/* Dropdown Menus */
 
 #login-dp{
     min-width: 250px;
@@ -34,33 +58,9 @@
     padding:5px;
 }
 
-#big {
-	font-size: 10rem;
-	margin-top: 3rem;
-	color: #f96145;
-}
-
 #dd-options {
     padding: 1em;
 }
-
-
-h2 {
-	margin-bottom: 3rem;
-	font-weight: bold;
-	color: #ababab;
-}
-
-.box {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	margin-bottom: 3rem;
-	margin-left: 3rem;
-	margin-right: 3rem;
-}
-
-
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
@@ -77,3 +77,34 @@ h2 {
         border-top:0 none;
     }
 }
+
+/* Index welcome page */
+
+#custom-welcome {
+    color: #45D24E;
+}
+
+#the-jester {
+    margin: auto;
+    height: 40%;
+    width: 40%;
+    margin-top: 3em;
+
+}
+
+
+
+
+
+.box {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin-bottom: 3rem;
+	margin-left: 3rem;
+	margin-right: 3rem;
+}
+
+
+
+

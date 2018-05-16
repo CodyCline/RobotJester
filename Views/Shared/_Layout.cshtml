@@ -7,7 +7,7 @@
     <!-- TODO: MORE META TAGS FOR S.E.O. OPTIMIZATION, DESCRIPTION, AUTHOR ETC. -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RobotJester</title>
+    <title>@ViewData["Title"] Robot Jester</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -34,24 +34,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-            <a class="navbar-brand" asp-controller="Store" asp-action="Index">RobotJester</a>
+            <a class="navbar-brand" asp-controller="Store" asp-action="Index">Robot Jester</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a asp-controller="Store" asp-action="About">About</a></li>
                     <li><a href="/">Link</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a asp-area="" asp-controller="Store" asp-action="Products">Products</a></li>
-                            <li><a asp-area="" asp-controller="Store" asp-action="Create">Create</a></li>
-                            <li><a asp-area="" asp-controller="Office" asp-action="Orders">Orders</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
+                    <li><a asp-area="" asp-controller="Store" asp-action="Products">Products</a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="GET"  asp-action="Search" asp-controller="Store"  >
                     <div class="form-group">

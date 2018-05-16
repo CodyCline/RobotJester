@@ -1,28 +1,32 @@
 <div class="container">
     <div class="page-header">
-        <h1>Manage your account.<span class="pull-right label label-success">:)</span></h1>
+        <h2>Manage your account.<span class="pull-right label label-success">:)</span></h2>
     </div>
     <div class="row">
-        <div class="col-lg-3">
-            <a asp-action="CartView">
-                Your Cart
+        <div class="col-md-4" id="account-block">
+            <a asp-action="CartView" class="btn btn-primary btn-block">
+                <h3><span class="glyphicon glyphicon-shopping-cart"></span>  Your Cart</h3>
+                <p>View your current cart</p>
             </a>
         </div>
-        <div class="col-lg-3">
-            <a asp-action="AddressView">
-                Your Addresses
+        <div class="col-md-4" id="account-block">
+            <a asp-action="OrderView" class="btn btn-primary btn-block">
+                <h3><span class="glyphicon glyphicon-list-alt"></span>  Your Orders</h3>
+                <p>View everything you ordered.</p>
             </a>
         </div>
-        <div class="col-lg-3">
-            <a asp-action="OrderView">
-                Your Orders
+        <div class="col-md-4" id="account-block">
+            <a asp-action="AddressView" class="btn btn-primary btn-block">
+                <h3><span class="glyphicon glyphicon-map-marker"></span>  Your Addresses</h3>
+                <p>Add new addresses or update existing ones.</p>
             </a>
         </div>
-        <div class="col-lg-3">
-            <a asp-action="Security">
-                Password, & security settings
+        <div class="col-md-4" id="account-block">
+            <a asp-action="Security" class="btn btn-primary btn-block">
+                <h3><span class="glyphicon glyphicon-lock"></span>  Security settings</h3>
+                <p>Change your personal information or password.</p>
             </a>
         </div>
     </div>   
     
-</div>
+</div>  

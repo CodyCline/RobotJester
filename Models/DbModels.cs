@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RobotJester.Models
+namespace RobotJester.Models //Where all of our models are kept
 {
     public class Products
     {

@@ -13,7 +13,7 @@
             
             <img  src="http://via.placeholder.com/350x150" class="img-responsive mr-botm">
             
-            <h3>QUICK OVERVIEW OF ITEM</h3>
+            <h2>QUICK OVERVIEW OF ITEM</h2>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -66,23 +66,26 @@
             </div>
         </div>
         <div class="col-md-4 col-sm-4 mr-top-50">
-            <h3>Details</h3>
-            <p>
-                @Model.description
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </p>
-            <h3>Links Below</h3>
-            <ul>
-                <li>@Model.instock_quantity of this item left in stock!</li>
-                <li>$@Model.price per unit</li>
-            </ul>
+            <h2>Details</h2>
+            @if(@Model.instock_quantity == 0)
+            {
+                @Html.Partial("Partials/show-outofstock.cshtml")
+            }
+            
+            <!-- Need to render different partials based on the stock quantity -->
+            <h4>@Model.instock_quantity in stock!</h4>
+            <h4>Our price: $@Model.price</h4>
             <p>
                 <form method="POST" asp-controller="Store" asp-action="AddToCart">
-                    <input type="submit" value="Add to bag!" class="btn btn-sm btn-warning">
+                    <div class="col-xs-4">                       
+                        <input type="submit" value="Add to bag!" class="btn btn-sm btn-warning">
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="number" class="form-control input-sm" name="quantity" value="1" min="1" max="50">
+                    </div>
+                    
                     <input type="hidden" name="product_id" value="@Model.product_id">
-                    <input type="number" name="quantity" value="1" min="1" max="50">
+                    
                 </form> 
             </p>
             

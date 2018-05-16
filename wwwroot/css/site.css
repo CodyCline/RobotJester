@@ -5,6 +5,12 @@
 h1 { 
    font-family: 'Anton', sans-serif;
    font-size: 4.25em;
+   letter-spacing: 0.07em;
+   text-transform: uppercase;
+}
+
+h3 {
+    color: white;
 }
 
 
@@ -15,23 +21,48 @@ p {
 }
 a {
     font-family: 'Acme', sans-serif;
-    color: rgb(68, 29, 211);
+    /* color: rgb(105, 68, 238); Deciding between colors */ 
+    color: #139D14;
     font-size: 1.15em;
 }
 
 .body {
     background-color: whitesmoke;
-    padding-bottom: 3em;
+    padding-bottom: 3em; 
 }
 
 /* Navbar in _Layout */
 
 #main-nav {
-    /* OVERRIDES THE DEFAULT NAVBAR STYLE */
+    /* Overrides the default bootstrap navbar */
     border-radius: 0px;
     border: 0px;
     background-color: rgb(62,35,87);
     
+}
+
+.navbar-inverse .navbar-brand {
+    color: rgb(254, 254, 0);
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: whitesmoke;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+    #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    }
 }
 
 /* Dropdown Menus */
@@ -62,29 +93,17 @@ a {
     padding: 1em;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
-    #login-dp{
-        background-color: inherit;
-        color: #fff;
-    }
-    #login-dp .bottom{
-        background-color: inherit;
-        border-top:0 none;
-    }
-}
+
 
 /* Index welcome page */
 
 #custom-welcome {
-    color: #45D24E;
+    color: rgba(240, 240, 33, 0.75);
+    text-transform: none; /* Override h1 */
 }
 
-#the-jester {
+/* Giant jester picture */
+#the-jester {  
     margin: auto;
     height: 40%;
     width: 40%;
@@ -95,7 +114,7 @@ a {
 
 
 
-
+/* Login page/form */
 .box {
 	position: absolute;
 	bottom: 0;
@@ -103,6 +122,16 @@ a {
 	margin-bottom: 3rem;
 	margin-left: 3rem;
 	margin-right: 3rem;
+}
+
+/* Account manage view */
+#account-block {
+    padding: 0.5em;
+    
+}
+
+#account-block a {
+    border: none;
 }
 
 

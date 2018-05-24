@@ -2,8 +2,15 @@
 @inject IOptions<StripeSettings> Stripe
 @inject LoggedInUserService userService  
 @{
-  var total = @userService.user_total.total * 100;
+  	float cartTotal = 0;
+  	foreach(var t in @userService.user_cart)
+  	{
+    	cartTotal += t.quantity * t.all_items.price * 100;
+  	}
+	// float finalTottal = cartTotal * 100;
 }
+
+
 <!-- For converting dollars into cents for stripe to process -->
 
 <div class="container">
@@ -20,10 +27,10 @@
             class="stripe-button"
             data-key="@Stripe.Value.PublishableKey"
     		data-name="Robot Jester!"
-    		data-description="@userService.get_sum.Count Items, $@userService.user_total.total"
-    		data-amount="@total">
+    		data-description="@userService.get_sum.Count Items"
+    		data-amount="@cartTotal">
   		</script>
-		<input type="hidden" value="@total" name="total" required>
+		<input type="hidden" value="@cartTotal" name="total" required>
 	</form>
 </div>
 

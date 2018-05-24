@@ -1,6 +1,15 @@
 @using System.Collections.Generic
 @using RobotJester.Models
 @inject LoggedInUserService userService  
+@{
+    //Calculate total on front-end
+    float total = 0;
+    foreach(var t in @userService.user_cart)
+    {
+        total += t.quantity * t.all_items.price;
+
+    }
+}
 <ul class="nav navbar-nav navbar-left">
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-shopping-cart"></span>   @userService.get_sum.Count item(s)</a>
@@ -28,7 +37,7 @@
                             <tr>
                                 <td></td>
                                 <th class="text-right"><strong>Total: </strong></th>
-                                <td>$@userService.user_total.total</td>
+                                <td>$@total</td>
                             </tr>
                             
                         </tbody>

@@ -107,9 +107,7 @@ namespace RobotJester.Controllers
             {
                 if(i.product_id == product_id && i.is_active == 1)
                 {
-                    i.quantity += quantity;
-                    cart_query.total += quantity * added_prod.price;
-                    
+                    i.quantity += quantity;                    
                     _context.SaveChanges();
                     TempData["Success"] = "Product added to your cart successfully!";
                     return RedirectToAction("Show");
@@ -140,7 +138,6 @@ namespace RobotJester.Controllers
                     updated_at = DateTime.Now,
                     is_active = 1
                 };
-                cart_query.total += quantity * added_prod.price;
                 _context.Add(new_item);
                 _context.SaveChanges();
                 TempData["Success"] = "Product added to your cart successfully!";
@@ -170,12 +167,6 @@ namespace RobotJester.Controllers
             //The user total is increased/decreased depending on the 
             else if(updated_item.quantity > quantity)
             {
-                //Loop through the difference between the current quantity and entered quantity decreasing the price each time
-                for(var i = updated_item.quantity; i > quantity; i--)
-                {
-                    cart_query.total -= product_updated.price;
-                    _context.SaveChanges();
-                }
                 cart_query.updated_at = DateTime.Now;
                 updated_item.quantity = quantity;
                 _context.SaveChanges();
@@ -189,12 +180,6 @@ namespace RobotJester.Controllers
             }
             else
             {
-                //Loop through the difference between the current quantity and entered quantity increasing the price each time
-                for(var i = updated_item.quantity; i < quantity; i++)
-                {
-                    cart_query.total += product_updated.price;
-                    _context.SaveChanges();
-                }
                 cart_query.updated_at = DateTime.Now;
                 updated_item.quantity = quantity;
                 _context.SaveChanges();
@@ -220,7 +205,6 @@ namespace RobotJester.Controllers
             }
             else
             {
-                cart_query.total -= product_being_removed.price * item_to_be_removed.quantity;
                 cart_query.updated_at = DateTime.Now; 
                 _context.Remove(item_to_be_removed);
                 _context.SaveChanges();
@@ -276,7 +260,7 @@ namespace RobotJester.Controllers
                 address_id = address_chosen,
                 subtotal = 0, //This field and the one below will created in the future subtotal is cost of items 
                 tax = 0, //This will change to shipping_cost and the tax will be estimated at front end and calculated by stripe
-                total_billed = current_cart.total, //From the form
+                total_billed = total, //From the form
                 //Stripe transaction token will also be stored for refunding purposes
                 created_at = DateTime.Now,
                 updated_at = DateTime.Now
@@ -299,7 +283,6 @@ namespace RobotJester.Controllers
             Cart new_cart = new Cart
             {
                 user_id = (int)session_id,
-                total = 0,
                 is_active = 1,
                 created_at = DateTime.Now,
                 updated_at = DateTime.Now,

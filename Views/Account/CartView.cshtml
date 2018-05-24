@@ -1,6 +1,15 @@
 @using RobotJester.Models
 @model List<RobotJester.Models.Cart_Items>
 @inject LoggedInUserService userService
+@{
+    //Calculate total on front-end
+    float cartTotal = 0;
+    foreach(var t in @userService.user_cart)
+    {
+        cartTotal += t.quantity * t.all_items.price;
+
+    }
+}
 <h2 class="text-center">Your cart</h2>
 <p class="text-center">@TempData["Update"]</p>
 <table class="table table-hover table-striped table-responsive">
@@ -42,7 +51,7 @@
             <td></td>
             <td></td>
             <td><strong>Total: </strong></td>
-            <td><strong>$@userService.user_total.total</strong></td>
+            <td><strong>$@cartTotal</strong></td>
         </tr>                         
                                     
     </tbody>

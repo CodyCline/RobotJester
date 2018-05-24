@@ -93,7 +93,6 @@ namespace RobotJester.Controllers
                     user_id = (int)session_id,
                     created_at = DateTime.Today,
                     updated_at = DateTime.Today,
-                    total = 0,
                     is_active = 1,
                 };
                 _context.Add(user_cart);

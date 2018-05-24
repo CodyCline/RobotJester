@@ -52,16 +52,6 @@ namespace RobotJester
             }
 
         }
-
-        //User total displayed on any desired view.
-        public Cart user_total
-        {
-            get {
-                int? userSessionId = (int)_httpContext.HttpContext.Session.GetInt32("id");
-                return _context.carts.FirstOrDefault(a => a.user_id == userSessionId && a.is_active == 1);
-            }
-
-        }
     }
 
 }

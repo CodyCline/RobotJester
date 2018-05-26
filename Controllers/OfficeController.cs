@@ -130,19 +130,22 @@ namespace RobotJester.Controllers
 
         //C.R.U.D For orders
         [HttpGet]
-        [Route("Orders/OrderList")]
+        [Route("Orders/All")]
         public IActionResult Orders()
         {
-            List<Orders> order_list = _context.orders.ToList();
+            List<Orders> order_list = _context.orders.Include(c => c.customer).ToList();
             return View(order_list);
         }   
 
         // View specific order with a customer
         [HttpGet]
         [Route("Orders/Show/{id}")]
-        public IActionResult Orderlist(int id)
+        public IActionResult ShowOrder(int id)
         {
-            return View();
+            var specific = _context.orders.Include(a => a.customer).Include(a => a.customer_address).SingleOrDefault(o => o.order_id==id);
+            List<Cart_Items> ordered_items = _context.cart_items.Include(i => i.all_items).Where(a => a.order_id==id && a.is_active==0).ToList();
+            ViewBag.Order = ordered_items;
+            return View(specific);
         }
 
         //C.R.U.D For user's

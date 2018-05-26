@@ -73,21 +73,35 @@
             }
             
             <!-- Need to render different partials based on the stock quantity -->
-            <h4>@Model.instock_quantity in stock!</h4>
-            <h4>Our price: $@Model.price</h4>
-            <p>
-                <form method="POST" asp-controller="Store" asp-action="AddToCart">
-                    <div class="col-xs-4">                       
-                        <input type="submit" value="Add to bag!" class="btn btn-sm btn-warning">
+            @if(@Model.instock_quantity <= 0)
+            {
+                <h4>Sorry, out of stock!</h4>
+                <h4>Our price: @Model.price.ToString("C")</h4>
+                <p>
+                    <div class="col-xs-4">
+                        <input type="submit" value="Out-of-stock!" class="btn btn-sm btn-danger btn-disabled" disabled>
                     </div>
                     <div class="col-xs-4">
-                        <input type="number" class="form-control input-sm" name="quantity" value="1" min="1" max="50">
-                    </div>
-                    
-                    <input type="hidden" name="product_id" value="@Model.product_id">
-                    
-                </form> 
-            </p>
+                            <input type="number" class="form-control input-sm" name="quantity" value="0" min="0" max="0" disabled>
+                    </div> 
+                </p>
+            }
+            else
+            {
+                <h4>@Model.instock_quantity in stock!</h4>
+                <h4>Our price: @Model.price.ToString("C")</h4>
+                <p>
+                    <form method="POST" asp-controller="Store" asp-action="AddToCart">
+                        <div class="col-xs-4">                       
+                            <input type="submit" value="Add to bag!" class="btn btn-sm btn-warning">
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="number" class="form-control input-sm" name="quantity" value="1" min="1" max="50">
+                        </div>                        
+                        <input type="hidden" name="product_id" value="@Model.product_id">
+                    </form> 
+                </p>
+            }
             
         </div>
         

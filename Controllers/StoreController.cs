@@ -164,7 +164,6 @@ namespace RobotJester.Controllers
                 return RedirectToAction("Index", "Store");
             }
             
-            //The user total is increased/decreased depending on the 
             else if(updated_item.quantity > quantity)
             {
                 cart_query.updated_at = DateTime.Now;
@@ -194,7 +193,7 @@ namespace RobotJester.Controllers
         [Route("Remove/Item/{id}")]
         public IActionResult RemoveFromCart(int id)
         {
-            //Remove from cart and update total
+            //Remove from cart
             int? session_id = HttpContext.Session.GetInt32("id");
             Cart_Items item_to_be_removed = _context.cart_items.SingleOrDefault(i => i.item_id == id);
             Cart cart_query = _context.carts.SingleOrDefault(c => c.user_id == (int)session_id && c.is_active == 1);
@@ -249,7 +248,7 @@ namespace RobotJester.Controllers
             //Update values within the database as well as create a new order 
             //Queries to grab
             int? session_id = HttpContext.Session.GetInt32("id");
-            List<Cart_Items> items_bought = _context.cart_items.Include(i => i.all_items).Where(i => i.cart_id==(int)session_id).ToList();
+            List<Cart_Items> items_bought = _context.cart_items.Include(i => i.all_items).Where(i => i.cart_id==(int)session_id && i.is_active==1).ToList();
             Cart current_cart = _context.carts.SingleOrDefault(c => c.user_id==(int)session_id && c.is_active==1);
             
 
@@ -260,7 +259,7 @@ namespace RobotJester.Controllers
                 address_id = address_chosen,
                 subtotal = 0, //This field and the one below will created in the future subtotal is cost of items 
                 tax = 0, //This will change to shipping_cost and the tax will be estimated at front end and calculated by stripe
-                total_billed = total, //From the form
+                total_billed = total / 100, //From the form
                 //Stripe transaction token will also be stored for refunding purposes
                 created_at = DateTime.Now,
                 updated_at = DateTime.Now

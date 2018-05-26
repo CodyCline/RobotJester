@@ -42,7 +42,6 @@ namespace RobotJester.Models //Where all of our models are kept
         [Key]
         public int cart_id { get; set; } //PRIMARY KEY
         public int user_id { get; set; } //FOREIGN KEY
-        public float total { get; set; }
         public sbyte is_active { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
@@ -83,13 +82,15 @@ namespace RobotJester.Models //Where all of our models are kept
 
         //Accessing properties
         public List<Cart_Items> ordered_items { get; set; }
+        public User customer { get; set; }
+        public Addresses customer_address { get; set; }
     }
 
     public class Addresses
     {
         [Key]
-        public int address_id { get; set; } //PRIMARY KEY
-        public int user_id { get; set; } //FOREIGN KEY
+        public int address_id { get; set; } //Primary Key
+        public int user_id { get; set; } //Foreign Key
 
         public string address_line_one { get; set; }
         public string address_line_two { get; set; }

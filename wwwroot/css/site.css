@@ -31,6 +31,14 @@ a {
     padding-bottom: 3em; 
 }
 
+#card {
+    height: 4em;
+}
+
+/* .btn-warning {
+    background-color: rgb(255, 153, 0) !important;
+} */
+
 /* Navbar in _Layout */
 
 #main-nav {

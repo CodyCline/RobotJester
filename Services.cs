@@ -32,7 +32,7 @@ namespace RobotJester
             }  
         }
 
-        //Use: To display user cart in dropdown menu at any location
+        //Use: To display user cart in dropdown menu at any route/view
         public List<Cart_Items> user_cart
         {
             get {

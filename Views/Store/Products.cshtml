@@ -5,7 +5,7 @@
     <h1>OUR INVENTORY</h1>
 </div>
 
-<div class="container col-centered">
+<div class="container col-centered" id="card">
     <div class="row">
         @foreach(var item in ViewBag.All)
         {                  
@@ -15,8 +15,15 @@
                     <div class="caption">
                         <h2>@item.name</h2>
                         <ul>
-                            <li>@item.instock_quantity left in stock </li>
-                            <li>Our price: $@item.price</li>
+                            @if(item.instock_quantity <= 0)
+                            {
+                                <li>Sorry, out of stock</li>
+                            }
+                            else
+                            {
+                                <li>@item.instock_quantity left in stock </li>
+                                <li>Our price: $@item.price</li>
+                            }
                         </ul>
                         <p class="text-center">
                             <a href="/Products/@item.product_id" class="btn btn-success" role="button">See Details</a>

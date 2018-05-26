@@ -1,34 +1,25 @@
 @model List<Orders>
 @using RobotJester.Models
 <div class="container">
-    <table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Items</th>
-            <th>Order Date</th>
-            <th>Approve/Deny</th>
-        </tr>
-    </thead>
-        <tbody>
+    <table class="table table-hover table-bordered">
+        <thead>
             <tr>
-                <td>Order</td>
-                @foreach(var o in @Model)
-                {
-                    <td>@o.total_billed</td>
-                }
-                <td><a href="/Orders">CLICK CUSTOMER PROFILE</a></td>
-                <td>
-                    <!-- 
-                        foreach statement will go here to list what the customer bought
-                        the below ones are just for testing/visual
-                     -->
-                    <a href="/Orders">Shoes</a>
-                    <a href="/Orders">Candles</a>
-                </td>
-                <td><button class="btn btn-success">Approve</button><button class="btn btn-danger">Deny</button></td>
-                
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Order Date</th>
+                <th>Amount</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach(var o in @Model)
+            {
+                <tr>
+                    <td><a href="Show/@o.order_id">Order #@o.order_id</a></td>
+                    <td><a href="">@o.customer.first_name @o.customer.last_name</a></td>
+                    <td>@o.created_at.ToString("D")</td>
+                    <td>$@o.total_billed</td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

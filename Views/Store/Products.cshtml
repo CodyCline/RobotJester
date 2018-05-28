@@ -2,7 +2,7 @@
 @using RobotJester.Models
 
 <div class="container text-center">
-    <h1>OUR INVENTORY</h1>
+    <h1 class="form-text">OUR INVENTORY</h1>
 </div>
 
 <div class="container col-centered" id="card">
@@ -11,18 +11,19 @@
         {                  
             <div class="col-md-3 col-centered">
                 <div class="thumbnail">
-                    <a href="/Products/@item.product_id"><img src="http://via.placeholder.com/350x150" alt=""></a>
+                    <a href="/Products/@item.product_id"><img class="img-responsive" src="@item.image_url" alt="product.png"></a>
                     <div class="caption">
-                        <h2>@item.name</h2>
+                        <h2 class="product-name">@item.name</h2>
                         <ul>
                             @if(item.instock_quantity <= 0)
                             {
-                                <li>Sorry, out of stock</li>
+                                <li class="product-stock">Sorry, out of stock</li>
+                                <li class="product-price">Our price: <strong>@item.price.ToString("C")</strong></li>
                             }
                             else
                             {
-                                <li>@item.instock_quantity left in stock </li>
-                                <li>Our price: $@item.price</li>
+                                <li class="product-stock" >@item.instock_quantity left in stock </li>
+                                <li class="product-price">Our price: <strong>@item.price.ToString("C")</strong></li>
                             }
                         </ul>
                         <p class="text-center">

@@ -1,9 +1,6 @@
 @model RobotJester.Models.LogUser
-<div class="jumbotron">
-    <div class="container">
-        <span id="big" class="glyphicon glyphicon-list-alt"></span>
-        <h2>Come one, come all! Enter our shop!</h2>
-        <div class="col-sm-6">
+<h1 class="text-center form-text">Enter our shop!</h1>
+<div class="container jumbotron form-width">
             <form method="POST" asp-controller="Login" asp-action="Account">
                 <div class="form-group">
                     <span asp-validation-for="Email"></span>
@@ -15,8 +12,8 @@
                     <label asp-for="Password">Password</label>
                     <input class="form-control" asp-for="Password">
                 </div>
-                <input class="btn-btn-success" type="submit" value="Login">
+                <div class="text-center">
+                    <input class="btn btn-primary" type="submit" value="Login">
+                </div>
             </form>
-        </div>
     </div>
-</div>

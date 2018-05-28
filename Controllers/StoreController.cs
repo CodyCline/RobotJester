@@ -76,7 +76,7 @@ namespace RobotJester.Controllers
         */
         
         //Search the store for products
-        [HttpGet]
+        [HttpPost]
         [Route("Search/q={query}")]
         public IActionResult Search(string query)
         {
@@ -216,6 +216,10 @@ namespace RobotJester.Controllers
         public IActionResult Checkout()
         {
             int? session_id = HttpContext.Session.GetInt32("id");
+            if(session_id == null)
+            {
+                return RedirectToAction("Index");
+            }
             //For displaying on the front end
             List<Addresses> addr_list = _context.addresses.Where(a => a.user_id == (int)session_id).ToList();
             ViewBag.AddressList = addr_list;
@@ -229,6 +233,10 @@ namespace RobotJester.Controllers
         [Route("Charge")]
         public IActionResult Charge(string stripeEmail, string stripeToken, int total, int address_chosen)
         {
+            if(total <=0 )
+            {
+                return RedirectToAction("Index", "Store");
+            }
             //Stripe server code for initiating the charge for their card
             var customerService = new StripeCustomerService();
             var chargeService = new StripeChargeService();

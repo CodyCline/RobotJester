@@ -4,14 +4,13 @@
 
 <div class="container">
     <div class="row"> 
-    <a asp-action="NewAddress" asp-controller="Account"><h3><span class="glyphicon glyphicon-plus"></span> Add a new address</h3></a>
-    @foreach(var a in Model)
-    {      
-                   
+        <a asp-action="NewAddress" asp-controller="Account"><h3 class="form-text"><span class="glyphicon glyphicon-plus"></span> Add a new address</h3></a>
+        @foreach(var a in Model)
+        {           
             <div class="col-sm-3">
                 <div class="well">
                     <address>
-                        <h4><strong>Home address</strong></h4>
+                        <h4><strong>Address #@a.address_id</strong></h4>
                         @a.corresponding_user.first_name @a.corresponding_user.last_name<br>
                         @a.address_line_one<br>
                         @if(a.address_line_two == null)
@@ -30,8 +29,6 @@
                     <a href="/Account/Addresses/Edit/@a.address_id">Edit</a> | <a href="/Account/Addresses/Delete/@a.address_id">Delete</a>
                 </div>
             </div>
-        
-        
-    }
+        }
     </div>
 </div>

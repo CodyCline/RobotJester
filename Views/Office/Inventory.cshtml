@@ -1,59 +1,67 @@
 @model RobotJester.Models.ViewProduct
 @using RobotJester.Models
 
-<form method="post" asp-controller="Office" asp-action="Validate">
-    <div class="form-group row">
-        <div class="col-sm-6">
-            <span asp-validation-for="name"></span>
-            <label asp-for="name">Product Name</label>
-            <input class="form-control" asp-for="name">
-        </div>
-        <div class="col-sm-6">
-            <span asp-validation-for="price"></span>
-            <label asp-for="price">Price</label>
-            <input class="form-control" asp-for="price">
-        </div>
-        <div class="col-sm-12">
-            <span asp-validation-for="description"></span>
-            <label asp-for="description">Description</label>         
-            <textarea rows="3" class="form-control" asp-for="description"></textarea>
-        </div>
-        <div class="col-sm-6">
-            <span asp-validation-for="instock_quantity"></span>
-            <label asp-for="instock_quantity">Quantity Instock</label>
-            <input class="form-control" asp-for="instock_quantity">
-        </div>
-        <div class="col-sm-6">
-            <span asp-validation-for="weight"></span>
-            <label asp-for="weight">Weight</label>
-            <input class="form-control" asp-for="weight">
-        </div>
-        <div class="col-sm-6">
-            <div class="form-group">
-                <span asp-validation-for="x_dimension"></span>
-                <label asp-for="x_dimension">X-Axis-Dimension</label>
-                <input class="form-control" asp-for="x_dimension">
+<div class="container form-other">
+    <h2>Add new product</h2>
+    <form method="post" asp-controller="Office" asp-action="Validate">
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <span asp-validation-for="name"></span>
+                <label asp-for="name">Product Name</label>
+                <input class="form-control" asp-for="name">
             </div>
-            <div class="form-group">
-                <span asp-validation-for="y_dimension"></span>
-                <label asp-for="y_dimension">Y-Axis-Dimension</label>
-                <input class="form-control" asp-for="y_dimension">
+            <div class="col-sm-6">
+                <span asp-validation-for="price"></span>
+                <label asp-for="price">Price</label>
+                <input placeholder="$" class="form-control" asp-for="price">
             </div>
-            <div class="form-group">
-                <span asp-validation-for="z_dimension"></span>
-                <label asp-for="z_dimension">Z-Axis-Dimension</label>
-                <input class="form-control" asp-for="z_dimension">
+            <div class="col-sm-12">
+                <span asp-validation-for="description"></span>
+                <label asp-for="description">Description</label>         
+                <textarea rows="3" class="form-control" asp-for="description"></textarea>
             </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="instock_quantity"></span>
+                <label asp-for="instock_quantity">Quantity Instock</label>
+                <input class="form-control" asp-for="instock_quantity">
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="weight"></span>
+                <label asp-for="weight">Weight</label>
+                <input placeholder="ex. 2.5lb" class="form-control" asp-for="weight">
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="image_url"></span>
+                <label asp-for="image_url">Product Image URL</label>
+                <input placeholder="https://" class="form-control" asp-for="image_url">
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <span asp-validation-for="x_dimension"></span>
+                    <label asp-for="x_dimension">X-Axis-Dimension (in inches)</label>
+                    <input placeholder="ex. 0.5in" class="form-control" asp-for="x_dimension">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="y_dimension"></span>
+                    <label asp-for="y_dimension">Y-Axis-Dimension (in inches)</label>
+                    <input placeholder="ex. 0.5in" class="form-control" asp-for="y_dimension">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="z_dimension"></span>
+                    <label asp-for="z_dimension">Z-Axis-Dimension (in inches)</label>
+                    <input placeholder="ex. 0.5in" class="form-control" asp-for="z_dimension">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <img class="img-responsive" src="https://i.stack.imgur.com/mg50D.png"alt="">
+            </div>        
+        <div class="col-sm-12 text-center">
+            <input type="submit" value="Create" class="btn btn-primary">
         </div>
-        <div class="col-sm-6">
-            <img src="https://i.stack.imgur.com/mg50D.png"alt="">
-        </div>        
-    <div class="col-sm-12">
-        <input type="submit" value="Create" class="btn btn-success">
-    </div>
-</form>
-
-
-    
+    </form>
+</div>
+<div class="">
+    @Html.Partial("Partials/EditTable")
+</div>
 
 

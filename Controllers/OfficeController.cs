@@ -32,11 +32,12 @@ namespace RobotJester.Controllers
         }
 
         //C.R.U.D For inventory management
-        // [Authorize(Policy = "AdminPrivledges")]
         [HttpGet]
         [Route("Inventory")]
         public IActionResult Inventory()
         {
+            var all = _context.products.ToList();
+            ViewBag.Products = all;
             return View();
         }
         
@@ -45,6 +46,8 @@ namespace RobotJester.Controllers
         [Route("Inventory")]
         public IActionResult Validate(ViewProduct newProduct)
         {
+            var all = _context.products.ToList();
+            ViewBag.Products = all;
             if(ModelState.IsValid)
             {
                 Products product = new Products
@@ -64,17 +67,14 @@ namespace RobotJester.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Inventory");
             }
+
             return View("Inventory", newProduct);
+            
         }
 
-        [HttpGet]
-        [Route("Edit")]
-        public IActionResult Edit()
-        {
-            var all = _context.products.ToList();
-            ViewBag.Products = all;   
-            return View();
-        }
+        // [HttpGet]
+        // [Route("Inventory/Lookup")]
+        // public IActionResult EditTable() => View();
 
         [HttpGet]
         [Route("Edit/{id}")]
@@ -111,20 +111,24 @@ namespace RobotJester.Controllers
         //Delete a specific item
         [HttpGet]
         [Route("Delete/Product/{id}")]
-        public IActionResult DeleteItem()
+        public IActionResult DeleteItem(int id)
         {
-            /*
-            TODO: This method will delete a specific product. Simple enough, 
-            however, there needs to be a foreach loop which removes all "cart_item"
-            records that have matching product id's so that a user cannot purchase an item
-            that no longer exists.
-             */
+            Products item_to_be_removed = _context.products.SingleOrDefault(i => i.product_id == id);
+            if(item_to_be_removed == null)
+            {
+                return RedirectToAction("Inventory");
+            }
 
-
-            //This viewdata will be returned and rendered in a user's cart when they login.
-            ViewData["Removed"] = "We removed item(s) from your cart that no longer exist in our inventory";
-
-            return null;
+            List<Cart_Items> remove_from_user = _context.cart_items.Where(p => p.product_id==item_to_be_removed.product_id).ToList();
+            foreach(var r in remove_from_user)
+            {
+                //Remove the product from the cart of users who have it added to their cart
+                _context.Remove(r);
+                _context.SaveChanges();
+            }
+            _context.Remove(item_to_be_removed);
+            _context.SaveChanges();
+            return RedirectToAction("Inventory");
         }
 
 

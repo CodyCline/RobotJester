@@ -1,6 +1,6 @@
 @using RobotJester.Models
 @model RobotJester.Models.NewAddress
-<div class="row">
+<div class="container form-width">
     <h3 class="text-center">Create a new address</h3>
     <form method="POST" asp-controller="Account" asp-action="ValidateAddress">
         <div class="form-group">
@@ -109,7 +109,9 @@
                 <option value="Canada">Canada</option>
             </select>
         </div>
+        <div class="text-center">
+            <input class="btn btn-primary"  type="submit" value="Add!">
+        </div>
         
-        <input class="btn-btn-success"  type="submit" value="Save">
     </form>
 </div>

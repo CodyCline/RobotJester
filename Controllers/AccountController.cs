@@ -227,19 +227,31 @@ namespace RobotJester.Controllers
             return RedirectToAction("AddressView", "Account");
         }
 
+        [HttpGet]
+        [Route("Account/Orders")]
+        public IActionResult Orders()
+        {
+            
+            int? session_id = HttpContext.Session.GetInt32("id");
+            List<Orders> your_orders = _context.orders.Include(c => c.customer).Where(o => o.user_id==(int)session_id).ToList();
+            return View(your_orders);
+        }
+
+
+        [HttpGet]
+        [Route("Account/Security")]
+        public IActionResult Security() => View();
         
+        [HttpGet]
+        [Route("Account/Security/Password")]
+        public IActionResult Password() => View();
 
-        
-
-
-        // [HttpGet]
-        // [Route("Account/Orders")]
-        // public IActionResult Orders()
-        // {
-        //     int? session_id = HttpContext.Session.GetInt32("id");
-        //     List<Orders> all_orders = _context.orders.Include(p => p.product_ordered).ToList();
-        //     return View(all_orders);
-        // }
+        [HttpPost]
+        [Route("Account/Security/Password")]
+        public IActionResult ChangePassword() //Viewmodel goes here
+        {
+            return RedirectToAction("Password");
+        } 
 
         
 

@@ -1,6 +1,6 @@
 @model Addresses
 @using RobotJester.Models
-<div class="row">
+<div class="container form-width">
     <h3>Make a correction, or change this address</h3>
     <form method="POST" asp-controller="Account" asp-action="ValidateAddress">
         <div class="form-group">
@@ -110,6 +110,8 @@
             </select>
         </div>
         
-        <input class="btn-btn-success"  type="submit" role="button" value="Save">
     </form>
+    <div class="text-center">
+        <input class="btn btn-primary"  type="submit" role="button" value="Save">
+    </div>
 </div>

@@ -10,7 +10,7 @@ h1 {
 }
 
 h3 {
-    color: white;
+    color: black;
 }
 
 
@@ -30,14 +30,6 @@ a {
     background-color: whitesmoke;
     padding-bottom: 3em; 
 }
-
-#card {
-    height: 4em;
-}
-
-/* .btn-warning {
-    background-color: rgb(255, 153, 0) !important;
-} */
 
 /* Navbar in _Layout */
 
@@ -83,9 +75,6 @@ a {
     
 }
 
-#dd-options {
-    border-top: 1px solid #ddd;
-}
 
 #login-dp .help-block{
     font-size:12px; 
@@ -138,9 +127,63 @@ a {
     
 }
 
+#account-block h3 {
+    color: white;
+}
+
 #account-block a {
     border: none;
 }
+
+
+
+/* Any form on the website */
+
+.form-width {
+    width: 60%;
+    background-color: rgb(38, 177, 38);
+    padding-bottom: 1em;
+    border-radius: 0.5em;
+}
+.form-other {
+    width: 60%;
+    background-color: rgb(255, 255, 255);
+    padding-bottom: 1em;
+    border-radius: 0.5em;
+}
+
+
+/* Product page */
+.form-text {
+    padding-bottom: 0.5em;
+}
+
+
+.product-name {
+    color: rgb(19, 90, 182);
+    list-style-type: none;
+    padding-bottom: 0.1em;
+}
+
+.product-stock {
+    color: rgb(219, 118, 23);
+    list-style-type: none;
+}
+
+.product-price {
+    color: rgb(42, 119, 42);
+    list-style-type: none;
+    padding-bottom: 0.1em;
+}
+
+
+#card {
+    height: 4em;
+    margin: auto;
+}
+
+
+
 
 
 

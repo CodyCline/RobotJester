@@ -1,0 +1,24 @@
+@model List<Orders>
+@using RobotJester.Models
+<div class="container">
+    <h2 class="text-center">Your Orders</h2>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Order Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var o in @Model)
+            {
+                <tr>
+                    <td><a href="/Orders/Show/@o.order_id">Order #@o.order_id</a></td>
+                    <td>@o.created_at.ToString("D")</td>
+                    <td>@o.total_billed.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

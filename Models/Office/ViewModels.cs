@@ -27,15 +27,23 @@ namespace RobotJester.Models
         public int instock_quantity { get; set;}
         // [Display(Name="Product Weight")]
         
+        [Display(Name="Weight")]
         [Required]
         public float weight { get; set; }
+
+        [Display(Name="Image URL")]
+        [Required]
+        public string image_url { get; set; }
         
+        [Display(Name="X-Axis-Dimension")]
         [Required]
         public float x_dimension { get; set; }
         
+        [Display(Name="Y-Axis-Dimension")]
         [Required]
         public float y_dimension { get; set; }
         
+        [Display(Name="Z-Axis-Dimension")]
         [Required]
         public float z_dimension { get; set; }
     }

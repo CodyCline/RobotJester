@@ -1,7 +1,8 @@
 @model RobotJester.Models.NewUser
 
-<div class="container">
-    <h1>Register Below -- its free!</h1>
+<h1 class="text-center form-text">Register Below. It's Free!</h1>
+<div class="container form-width jumbotron register-form">
+    
     <form method="POST" asp-controller="Account" asp-action="Register">
         <div class="form-group">
             <span asp-validation-for="first_name"></span>
@@ -15,20 +16,30 @@
         </div>
         <div class="form-group">
             <span asp-validation-for="email"></span>
-            <label asp-for="email"></label>
+            <label asp-for="email">Email</label>
             <input class="form-control" asp-for="email">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="phone"></span>
+            <label asp-for="phone">Phone Number</label>
+            <input class="form-control" asp-for="phone">
+            <small>Optional, we'll never share your phone with anyone else.</small>
         </div>
         <div class="form-group">
             <span asp-validation-for="password"></span>
             <label asp-for="password" asp-for="password">Password</label>
             <input class="form-control" asp-for="password">
+            <small>Must be at least 6 characters long.</small>
         </div>
         <div class="form-group">
             <span asp-validation-for="pw_confirm"></span>
-            <label for="pw_confirm" asp-for="pw_confirm"></label>
+            <label for="pw_confirm" asp-for="pw_confirm">Confirm Password</label>
             <input class="form-control" asp-for="pw_confirm">
+            <small>Must be at least 6 characters long.</small>
         </div>
-        <input class="btn-btn-success" type="submit" value="Register!">
+        <div class="text-center">
+            <input class="btn btn-primary" type="submit" value="Register">
+        </div>
     </form>
 </div>
 

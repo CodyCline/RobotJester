@@ -70,27 +70,6 @@ namespace RobotJester.Controllers
             }
             
         }
-        /*
-        TODO: If the user already added that specific item to their cart 
-        Update the quantity instead of adding a seperate item
-        */
-        
-        //Search the store for products
-        [HttpPost]
-        [Route("Search/q={query}")]
-        public IActionResult Search(string query)
-        {
-            if(!String.IsNullOrEmpty(query))
-            {
-                List<Products> search = _context.products.Where(s => s.name.Contains(query)).ToList();
-                return View(search);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Store");
-            }
-            
-        }
 
 
         [HttpPost]

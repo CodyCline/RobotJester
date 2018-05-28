@@ -57,6 +57,7 @@ namespace RobotJester.Controllers
                     description = newProduct.description,
                     instock_quantity = newProduct.instock_quantity,
                     weight = newProduct.weight,
+                    image_url = newProduct.image_url,
                     x_dimension = newProduct.x_dimension,
                     y_dimension = newProduct.y_dimension,
                     z_dimension = newProduct.z_dimension,
@@ -72,9 +73,6 @@ namespace RobotJester.Controllers
             
         }
 
-        // [HttpGet]
-        // [Route("Inventory/Lookup")]
-        // public IActionResult EditTable() => View();
 
         [HttpGet]
         [Route("Edit/{id}")]
@@ -88,6 +86,8 @@ namespace RobotJester.Controllers
         [Route("Edit/{id}")]
         public IActionResult ValidateEdit(int id, ViewProduct edit)
         {
+            var all = _context.products.ToList();
+            ViewBag.Products = all;
             if(ModelState.IsValid)
             {
                 Products current_product = _context.products.SingleOrDefault(p => p.product_id==id);
@@ -97,13 +97,14 @@ namespace RobotJester.Controllers
                     current_product.description = edit.description;
                     current_product.instock_quantity = edit.instock_quantity;
                     current_product.weight = edit.weight;
+                    current_product.image_url = edit.image_url;
                     current_product.x_dimension = edit.x_dimension;
                     current_product.y_dimension = edit.y_dimension;
                     current_product.z_dimension = edit.z_dimension;
                     current_product.updated_at = DateTime.Now;
                     _context.SaveChanges();
                 };
-                return RedirectToAction("Edit");
+                return RedirectToAction("Inventory");
             }
             return View("Inventory", edit);
         }

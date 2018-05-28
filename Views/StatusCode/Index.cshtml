@@ -5,7 +5,7 @@
     switch (statusCode)
     {
         case 400:
-            statusmessage = "Bad request: The request cannot be fulfilled due to bad syntax";
+            statusmessage = "Bad request: The request cannot be fulfilled";
             break;
         case 403:
             statusmessage = "Forbidden";
@@ -27,7 +27,7 @@
 <div class="jumbotron">
     <div class="text-center">
         <!-- Custom error image goes here -->
-        <img class="img-responsive mx-auto d-block" src="http://via.placeholder.com/350x150" alt="">
+        <img class="img-responsive" id="the-jester" src="~/images/jester.png" alt="">
     </div>
     <hr>
     <h1>Error @Model</h1>

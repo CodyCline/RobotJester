@@ -32,7 +32,6 @@ namespace RobotJester.Models
         public float weight { get; set; }
 
         [Display(Name="Image URL")]
-        [Required]
         public string image_url { get; set; }
         
         [Display(Name="X-Axis-Dimension")]

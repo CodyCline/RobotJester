@@ -12,7 +12,7 @@
 
 <!-- For converting dollars into cents for stripe to process -->
 
-<div class="container">
+<div class="container form-other">
 	<h1 class="text-center form-text">Checkout</h1>
     <form asp-action="Charge" method="POST">
 		<div class="text-center">
@@ -20,13 +20,14 @@
 			<select class="form-control" name="address_chosen">
 			@foreach(var a in ViewBag.AddressList)
 			{
-				<option value="" >Please Select</option>
+				<option value="" disabled>Please Select</option>
 				<option value="@a.address_id">@a.address_line_one</option>
 			}
-			<!-- FOREACH LOOP -->
+			
 			</select>
+			<a asp-action="AddressView" asp-controller="Account">Don't see your address? Create one here!</a>
 		</div>
-		<div class="container text-center" style="padding-top:30px;">
+		<div class="text-center" style="padding-top:30px;">
 			<script
 				src="https://checkout.stripe.com/checkout.js"
 				class="stripe-button"
